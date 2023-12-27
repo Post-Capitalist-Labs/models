@@ -4,24 +4,25 @@ from mesa_viz_tornado.modules import CanvasGrid, ChartModule
 from mesa_viz_tornado.ModularVisualization import ModularServer
 from council_economy import CouncilBasedEconomyModel, WorkersCouncilAgent, ConsumersCouncilAgent
 
-
 def agent_portrayal(agent):
     if agent is None:
         return
-    portrayal = {"Shape": "circle", "Filled": "true", "r": 0.5}
+
+    portrayal = {"Shape": "circle", "Filled": "true", "r": 0.5, "Layer": 0}
+
     if isinstance(agent, WorkersCouncilAgent):
         portrayal["Color"] = "#FF0000"  # Red for WorkersCouncilAgent
     elif isinstance(agent, ConsumersCouncilAgent):
         portrayal["Color"] = "#0000FF"  # Blue for ConsumersCouncilAgent
-    portrayal["Layer"] = 0
+
     return portrayal
 
 grid_width, grid_height = 20, 20
 canvas_element = CanvasGrid(agent_portrayal, grid_width, grid_height, 500, 500)
 
 chart_element = ChartModule([
-    {"Label": "Total Production", "Color": "Red"},
-    {"Label": "Total Consumption", "Color": "Blue"}
+    {"Label": "Worker Council Production Proposals", "Color": "Red"},
+    {"Label": "Consumer Council Consumption Proposals", "Color": "Blue"}
 ])
 
 model_params = {
