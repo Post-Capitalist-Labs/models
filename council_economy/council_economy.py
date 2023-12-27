@@ -12,6 +12,13 @@ class WorkersCouncilAgent(Agent):
     def step(self):
         adjustment = self.model.worker_adjustment
         self.production_plan += random.randint(-adjustment, adjustment)
+        self.move()
+
+    def move(self):
+        possible_steps = self.model.grid.get_neighborhood(
+            self.pos, moore=True, include_center=False)
+        new_position = random.choice(possible_steps)
+        self.model.grid.move_agent(self, new_position)
 
 class ConsumersCouncilAgent(Agent):
     def __init__(self, unique_id, model):
@@ -21,6 +28,13 @@ class ConsumersCouncilAgent(Agent):
     def step(self):
         adjustment = self.model.consumer_adjustment
         self.consumption_plan += random.randint(-adjustment, adjustment)
+        self.move()
+
+    def move(self):
+        possible_steps = self.model.grid.get_neighborhood(
+            self.pos, moore=True, include_center=False)
+        new_position = random.choice(possible_steps)
+        self.model.grid.move_agent(self, new_position)
 
 class CouncilBasedEconomyModel(Model):
     def __init__(self, num_workers_councils, num_consumers_councils, worker_adjustment, consumer_adjustment, width, height):
@@ -31,8 +45,8 @@ class CouncilBasedEconomyModel(Model):
         self.schedule = RandomActivation(self)
         self.datacollector = DataCollector(
             model_reporters={
-                "Total Production": lambda m: sum(agent.production_plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
-                "Total Consumption": lambda m: sum(agent.consumption_plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
+                "Worker Council Production Proposals": lambda m: sum(agent.production_plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
+                "Consumer Council Consumption Proposals": lambda m: sum(agent.consumption_plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
             }
         )
 
@@ -49,6 +63,19 @@ class CouncilBasedEconomyModel(Model):
     def step(self):
         self.datacollector.collect(self)
         self.schedule.step()
+        if self.all_proposals_matched():
+            self.running = False
+
+    def all_proposals_matched(self):
+        for cell in self.grid.coord_iter():
+            agents = cell[0]
+            if len(agents) > 1:
+                if any(isinstance(agent, WorkersCouncilAgent) for agent in agents) and \
+                   any(isinstance(agent, ConsumersCouncilAgent) for agent in agents):
+                    continue
+                else:
+                    return False
+        return True
 
     def place_agent_randomly(self, agent):
         x = random.randrange(self.grid.width)
