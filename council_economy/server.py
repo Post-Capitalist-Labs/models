@@ -28,8 +28,8 @@ chart_element = ChartModule([
 model_params = {
     "num_workers_councils": Slider("Number of Worker Councils", 100, 1, 200, 1),
     "num_consumers_councils": Slider("Number of Consumer Councils", 100, 1, 200, 1),
-    "worker_adjustment": Slider("Worker Propsals Adjustment (<10=bad for society, >10=good)", 10, 1, 20, 1),
-    "consumer_adjustment": Slider("Consumer Proposal Adjustment (<10=bad for society, >10=good)", 10, 1, 20, 1),
+    "worker_adjustment": Slider("Worker Propsals Adjustment", 10, 1, 20, 1),
+    "consumer_adjustment": Slider("Consumer Proposal Adjustment", 10, 1, 20, 1),
     "width": grid_width,
     "height": grid_height
 }
