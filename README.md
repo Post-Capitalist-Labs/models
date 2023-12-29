@@ -5,9 +5,7 @@
 - Mesa
 
 2. Clone this respo
-
 3. `cd`into `council_economy`
-
 4. Run the cmd `mesa runserver` 
 
 To contribute fork this repo and submit a pull request with your changes.
