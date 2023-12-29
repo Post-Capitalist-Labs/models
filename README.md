@@ -20,7 +20,7 @@
 
 
 ## Ways to use this model
-To effectively challenge and validate your model of a council-based economy, where workers and consumers democratically plan production and consumption without a central authority or market mechanisms, you can experiment with various parameters and scenarios. The goal is to explore how different conditions affect the efficiency and viability of such an economy. Here are several approaches to consider:
+To effectively challenge and validate this model of a council-based economy, where workers and consumers democratically plan production and consumption without a central authority or market mechanisms, you can experiment with various parameters and scenarios. The goal is to explore how different conditions affect the efficiency and viability of such an economy. Here are several approaches to consider:
 
 ### 1. Adjusting Adjustment Factors
 - **Varying Adjustment Levels**: Experiment with different ranges for `worker_adjustment` and `consumer_adjustment`. These adjustments simulate the degree of flexibility or responsiveness in production and consumption plans. Test scenarios with very rigid plans (small adjustments) and very flexible plans (large adjustments) to observe how this impacts the time taken to reach an equilibrium.
@@ -53,4 +53,4 @@ To effectively challenge and validate your model of a council-based economy, whe
 - **Learning Algorithms**: Implement simple learning algorithms for agents to adjust their behavior based on past experiences. This could simulate learning and adaptation within councils.
 
 ### Conclusion
-By exploring these different approaches, you can challenge your model under a variety of conditions and gain a deeper understanding of the dynamics and feasibility of a council-based economic system. The key is to identify parameters that significantly impact the model's behavior and explore their implications in depth.
+By exploring these different approaches, you can challenge this model under a variety of conditions and gain a deeper understanding of the dynamics and feasibility of a council-based economic system. The key is to identify parameters that significantly impact the model's behavior and explore their implications in depth.
