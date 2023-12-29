@@ -1,3 +1,5 @@
+![ALT](/simple-council-economy-mesa-model/-/raw/main/assets/Screenshot_2023-12-29_at_22.26.55.png)
+
 # How to run this model
 
 1. Make sure your local environment has these resources installed:
