@@ -1,3 +1,18 @@
+# How to run this model
+
+1. Make sure your local environment has these resources installed:
+- Python 3.12.1 or higher
+- Mesa
+
+2. Clone this respo
+
+3. `cd`into `council_economy`
+
+4. Run the cmd `mesa runserver` 
+
+To contribute fork this repo and submit a pull request with your changes.
+
+
 # About this model
 
  A simple council-based economy model comprising worker and consumer councils. Each council will make proposals regarding production and consumption, and the model will iterate these proposals until a balance is achieved between supply and demand. We'll set up 100 workers' councils and 100 consumers' councils as specified.
