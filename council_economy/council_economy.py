@@ -39,6 +39,8 @@ class ConsumersCouncilAgent(Agent):
 class CouncilBasedEconomyModel(Model):
     def __init__(self, num_workers_councils, num_consumers_councils, worker_adjustment, consumer_adjustment, width, height):
         super().__init__()
+        self.num_workers_councils = num_workers_councils
+        self.num_consumers_councils = num_consumers_councils
         self.worker_adjustment = worker_adjustment
         self.consumer_adjustment = consumer_adjustment
         self.grid = MultiGrid(width, height, True)
@@ -60,11 +62,56 @@ class CouncilBasedEconomyModel(Model):
             self.schedule.add(agent)
             self.place_agent_randomly(agent)
 
+        # Initialize variables for tracking proposals
+        self.total_matched_proposals = 0
+        self.total_unmatched_proposals = 0
+
     def step(self):
         self.datacollector.collect(self)
         self.schedule.step()
+
+        # Update text visualization before checking all proposals matched
+        self.text_visualization()
+
         if self.all_proposals_matched():
             self.running = False
+
+    def text_visualization(self):
+        matched, unmatched_consumers, unmatched_workers = self.proposals_status()
+        self.total_matched_proposals += matched
+        self.total_unmatched_proposals += (unmatched_consumers + unmatched_workers)
+
+        print(f"Step: {self.schedule.steps}")
+        print(f"Number of Workers Councils: {self.num_workers_councils}")
+        print(f"Number of Consumers Councils: {self.num_consumers_councils}")
+        print(f"Worker Adjustment: {self.worker_adjustment}")
+        print(f"Consumer Adjustment: {self.consumer_adjustment}")
+        print(f"Matched Proposals This Step: {matched}")
+        print(f"Total Matched Proposals: {self.total_matched_proposals}")
+        print(f"Unmatched Consumer Proposals This Step: {unmatched_consumers}")
+        print(f"Unmatched Worker Proposals This Step: {unmatched_workers}")
+        print(f"Total Unmatched Proposals: {self.total_unmatched_proposals}")
+        print("-----------------------------------")
+
+    def proposals_status(self):
+        matched = 0
+        unmatched_consumers = 0
+        unmatched_workers = 0
+
+        for cell in self.grid.coord_iter():
+            agents = cell[0]
+            if len(agents) > 1:
+                if any(isinstance(agent, WorkersCouncilAgent) for agent in agents) and \
+                   any(isinstance(agent, ConsumersCouncilAgent) for agent in agents):
+                    matched += 1
+                else:
+                    unmatched_consumers += sum(1 for agent in agents if isinstance(agent, ConsumersCouncilAgent))
+                    unmatched_workers += sum(1 for agent in agents if isinstance(agent, WorkersCouncilAgent))
+            else:
+                unmatched_consumers += sum(1 for agent in agents if isinstance(agent, ConsumersCouncilAgent))
+                unmatched_workers += sum(1 for agent in agents if isinstance(agent, WorkersCouncilAgent))
+
+        return matched, unmatched_consumers, unmatched_workers
 
     def all_proposals_matched(self):
         for cell in self.grid.coord_iter():
