@@ -8,8 +8,26 @@
 3. `cd`into `council_economy`
 4. Run the cmd `mesa runserver` 
 
-To contribute fork this repo and submit a pull request with your changes.
 
+Upon running you will see: 
+- a browser based interactive model running on `http://127.0.0.1:8521/` 
+ - terminal logs output from `text_visualization`: 
+```-----------------------------------
+{"type":"get_step","step":856}
+Step: 856
+Number of Workers Councils: 100
+Number of Consumers Councils: 91
+Worker Adjustment: 10
+Consumer Adjustment: 10
+Matched Proposals This Step: 22
+Total Matched Proposals: 15279
+Unmatched Consumer Proposals This Step: 68
+Unmatched Worker Proposals This Step: 76
+Total Unmatched Proposals: 129293
+Equilibrium not yet reached.
+-----------------------------------
+```
+To contribute fork this repo and submit a pull request with your changes.
 
 # About this model
 
