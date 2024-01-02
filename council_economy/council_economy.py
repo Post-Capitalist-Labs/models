@@ -4,37 +4,119 @@ from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
 import random
 
-class WorkersCouncilAgent(Agent):
-    def __init__(self, unique_id, model):
+class CouncilAgent(Agent):
+    def __init__(self, unique_id, model, initial_plan_min, initial_plan_max):
         super().__init__(unique_id, model)
-        self.production_plan = random.randint(50, 100)
+        self.plan = random.randint(initial_plan_min, initial_plan_max)
+        self.attempts_without_match = 0
+        self.met_unmatched = False
+        self.encountered_proposals = []
+
+    def teleport_if_unmatched(self, max_attempts):
+        if self.attempts_without_match > max_attempts:
+            x = random.randrange(self.model.grid.width)
+            y = random.randrange(self.model.grid.height)
+            self.model.grid.move_agent(self, (x, y))
+            self.attempts_without_match = 0
+
+    def adjust_proposal(self, global_average, min_value, max_value):
+        # adjustment logic
+        old_plan = self.plan
+        learning_factor = self.calculate_learning_factor()
+        self.plan += (global_average - self.plan) * learning_factor
+        self.plan = max(min_value, min(self.plan, max_value))
+        global_average = self.model.calculate_global_average_plan()
+        self.plan = (self.plan + global_average) // 2  # Move towards the global average
+        self.plan += random.randint(-5, 5)  # Random fluctuation
+        self.plan = max(min_value, min(max_value, self.plan))
+        target_plan = self.calculate_target_plan()
+        distance = abs(self.plan - target_plan)
+        distance_to_average = abs(self.plan - global_average)
+        adjustment = max(1, distance // 4)  # Dynamic adjustment based on distance
+
+        if self.met_unmatched:
+            self.plan += adjustment
+        else:
+            self.plan -= adjustment
+        self.plan = max(min_value, min(max_value, self.plan))
+        print(f"Agent {self.unique_id} adjusted plan from {old_plan} to {self.plan}")
+
+        # Incorporate random fluctuation based on proposal dynamics
+        proposal_fluctuation = random.randint(-10, 10)  # More aggressive fluctuation
+        self.plan += proposal_fluctuation
+        self.plan = max(min_value, min(self.plan, max_value))
+
+    def calculate_learning_factor(self):
+            # Implement a learning factor based on past encounters
+            if not self.encountered_proposals:
+                return 1  # Default factor if no encounters
+
+            # Calculate learning factor based on historical data
+            # Example: simple average of past encounters
+            return sum(self.encountered_proposals) / len(self.encountered_proposals) / self.plan
+
+    def calculate_target_plan(self):
+        if not self.encountered_proposals:
+            return self.plan  # Return current plan if no encounters
+
+        average_encounter = sum(self.encountered_proposals) / len(self.encountered_proposals)
+        target = average_encounter * 0.8  # Targeting less than 5 proposals per agent
+        return target
+
+    def move_towards_unmatched(self, adjustment):
+        max_steps = adjustment // 2
+        for _ in range(max_steps):
+            possible_steps = self.model.grid.get_neighborhood(
+                self.pos, moore=True, include_center=False)
+            new_position = random.choice(possible_steps)
+            self.model.grid.move_agent(self, new_position)
+
+    def check_for_potential_matches(self):
+        cellmates = self.model.grid.get_cell_list_contents([self.pos])
+        if isinstance(self, WorkersCouncilAgent):
+            self.met_unmatched = any(isinstance(agent, ConsumersCouncilAgent) for agent in cellmates)
+        elif isinstance(self, ConsumersCouncilAgent):
+            self.met_unmatched = any(isinstance(agent, WorkersCouncilAgent) for agent in cellmates)
+        self.attempts_without_match = 0 if self.met_unmatched else self.attempts_without_match + 1
+
+    def record_encounter(self, encountered_plan):
+        self.encountered_proposals.append(encountered_plan)   
+        
+    def calculate_global_average_plan(self):
+        print("Incorrect method call to calculate_global_average_plan on agent")
+        return 0  # Dummy return
+
+class WorkersCouncilAgent(CouncilAgent):
+    def __init__(self, unique_id, model):
+        super().__init__(unique_id, model, 50, 100)
 
     def step(self):
-        adjustment = self.model.worker_adjustment
-        self.production_plan += random.randint(-adjustment, adjustment)
-        self.move()
+        self.check_for_potential_matches()
+        cellmates = self.model.grid.get_cell_list_contents([self.pos])
+        for agent in cellmates:
+            if isinstance(agent, ConsumersCouncilAgent):
+                self.record_encounter(agent.plan)
+        self.move_towards_unmatched(self.model.worker_adjustment)
+        self.teleport_if_unmatched(max_attempts=400)
 
-    def move(self):
-        possible_steps = self.model.grid.get_neighborhood(
-            self.pos, moore=True, include_center=False)
-        new_position = random.choice(possible_steps)
-        self.model.grid.move_agent(self, new_position)
+        global_average_plan = self.model.calculate_global_average_plan()
+        self.adjust_proposal(global_average_plan, 50, 150)
 
-class ConsumersCouncilAgent(Agent):
+class ConsumersCouncilAgent(CouncilAgent):
     def __init__(self, unique_id, model):
-        super().__init__(unique_id, model)
-        self.consumption_plan = random.randint(60, 120)
+        super().__init__(unique_id, model, 60, 120)
 
     def step(self):
-        adjustment = self.model.consumer_adjustment
-        self.consumption_plan += random.randint(-adjustment, adjustment)
-        self.move()
+        self.check_for_potential_matches()
+        cellmates = self.model.grid.get_cell_list_contents([self.pos])
+        for agent in cellmates:
+            if isinstance(agent, WorkersCouncilAgent):
+                self.record_encounter(agent.plan)
+        self.move_towards_unmatched(self.model.consumer_adjustment)
+        self.teleport_if_unmatched(max_attempts=400)
 
-    def move(self):
-        possible_steps = self.model.grid.get_neighborhood(
-            self.pos, moore=True, include_center=False)
-        new_position = random.choice(possible_steps)
-        self.model.grid.move_agent(self, new_position)
+        global_average_plan = self.model.calculate_global_average_plan()
+        self.adjust_proposal(global_average_plan, 60, 130)
 
 class CouncilBasedEconomyModel(Model):
     def __init__(self, num_workers_councils, num_consumers_councils, worker_adjustment, consumer_adjustment, width, height):
@@ -47,8 +129,8 @@ class CouncilBasedEconomyModel(Model):
         self.schedule = RandomActivation(self)
         self.datacollector = DataCollector(
             model_reporters={
-                "Worker Council Production Proposals": lambda m: sum(agent.production_plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
-                "Consumer Council Consumption Proposals": lambda m: sum(agent.consumption_plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
+                "Worker Council Production Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
+                "Consumer Council Consumption Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
             }
         )
 
@@ -62,15 +144,22 @@ class CouncilBasedEconomyModel(Model):
             self.schedule.add(agent)
             self.place_agent_randomly(agent)
 
-        # Initialize variables for tracking proposals
         self.total_matched_proposals = 0
         self.total_unmatched_proposals = 0
+        self.time_to_equilibrium = None
+
+    def calculate_global_average_plan(self):
+        total_plan = sum(agent.plan for agent in self.schedule.agents)
+        return total_plan / len(self.schedule.agents) if self.schedule.agents else 0
 
     def step(self):
         self.datacollector.collect(self)
         self.schedule.step()
 
-        # Update text visualization before checking all proposals matched
+        matched, _, _ = self.proposals_status()
+        if matched == (self.num_workers_councils + self.num_consumers_councils) and self.time_to_equilibrium is None:
+            self.time_to_equilibrium = self.schedule.steps
+
         self.text_visualization()
 
         if self.all_proposals_matched():
@@ -91,6 +180,10 @@ class CouncilBasedEconomyModel(Model):
         print(f"Unmatched Consumer Proposals This Step: {unmatched_consumers}")
         print(f"Unmatched Worker Proposals This Step: {unmatched_workers}")
         print(f"Total Unmatched Proposals: {self.total_unmatched_proposals}")
+        if self.time_to_equilibrium is not None:
+            print(f"Time to Equilibrium: {self.time_to_equilibrium} steps")
+        else:
+            print("Equilibrium not yet reached.")
         print("-----------------------------------")
 
     def proposals_status(self):
@@ -107,9 +200,6 @@ class CouncilBasedEconomyModel(Model):
                 else:
                     unmatched_consumers += sum(1 for agent in agents if isinstance(agent, ConsumersCouncilAgent))
                     unmatched_workers += sum(1 for agent in agents if isinstance(agent, WorkersCouncilAgent))
-            else:
-                unmatched_consumers += sum(1 for agent in agents if isinstance(agent, ConsumersCouncilAgent))
-                unmatched_workers += sum(1 for agent in agents if isinstance(agent, WorkersCouncilAgent))
 
         return matched, unmatched_consumers, unmatched_workers
 
