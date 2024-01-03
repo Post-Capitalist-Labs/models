@@ -20,7 +20,6 @@ class CouncilAgent(Agent):
             self.attempts_without_match = 0
 
     def adjust_proposal(self, global_average, min_value, max_value):
-        # adjustment logic
         old_plan = self.plan
         learning_factor = self.calculate_learning_factor()
         self.plan += (global_average - self.plan) * learning_factor
@@ -41,10 +40,12 @@ class CouncilAgent(Agent):
         self.plan = max(min_value, min(max_value, self.plan))
         print(f"Agent {self.unique_id} adjusted plan from {old_plan} to {self.plan}")
 
-        # Incorporate random fluctuation based on proposal dynamics
-        proposal_fluctuation = random.randint(-10, 10)  # More aggressive fluctuation
-        self.plan += proposal_fluctuation
-        self.plan = max(min_value, min(self.plan, max_value))
+        # Feedback Mechanism: Incorporate success/failure history into adjustment
+        if self.met_unmatched:
+            self.plan += self.calculate_feedback_adjustment()
+        else:
+            self.plan -= self.calculate_feedback_adjustment()
+        self.plan = max(min_value, min(max_value, self.plan))
 
     def calculate_learning_factor(self):
             # Implement a learning factor based on past encounters
@@ -52,7 +53,6 @@ class CouncilAgent(Agent):
                 return 1  # Default factor if no encounters
 
             # Calculate learning factor based on historical data
-            # Example: simple average of past encounters
             return sum(self.encountered_proposals) / len(self.encountered_proposals) / self.plan
 
     def calculate_target_plan(self):
@@ -99,6 +99,8 @@ class WorkersCouncilAgent(CouncilAgent):
         self.move_towards_unmatched(self.model.worker_adjustment)
         self.teleport_if_unmatched(max_attempts=400)
 
+    def calculate_feedback_adjustment(self):
+
         global_average_plan = self.model.calculate_global_average_plan()
         self.adjust_proposal(global_average_plan, 50, 150)
 
@@ -114,12 +116,13 @@ class ConsumersCouncilAgent(CouncilAgent):
                 self.record_encounter(agent.plan)
         self.move_towards_unmatched(self.model.consumer_adjustment)
         self.teleport_if_unmatched(max_attempts=400)
+    def calculate_feedback_adjustment(self):
 
         global_average_plan = self.model.calculate_global_average_plan()
         self.adjust_proposal(global_average_plan, 60, 130)
 
 class CouncilBasedEconomyModel(Model):
-    def __init__(self, num_workers_councils, num_consumers_councils, worker_adjustment, consumer_adjustment, width, height):
+    def __init__(self, num_workers_councils, num_consumers_councils, worker_adjustment, consumer_adjustment, width, height, acceptable_proposal_difference, stability_window, min_unmatched_threshold):
         super().__init__()
         self.num_workers_councils = num_workers_councils
         self.num_consumers_councils = num_consumers_councils
@@ -127,6 +130,10 @@ class CouncilBasedEconomyModel(Model):
         self.consumer_adjustment = consumer_adjustment
         self.grid = MultiGrid(width, height, True)
         self.schedule = RandomActivation(self)
+        self.acceptable_proposal_difference = acceptable_proposal_difference
+        self.stability_window = stability_window
+        self.min_unmatched_threshold = min_unmatched_threshold
+        self.proposal_history = []
         self.datacollector = DataCollector(
             model_reporters={
                 "Worker Council Production Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
@@ -134,19 +141,27 @@ class CouncilBasedEconomyModel(Model):
             }
         )
 
-        for i in range(num_workers_councils):
+        for i in range(self.num_workers_councils):
             agent = WorkersCouncilAgent(i, self)
             self.schedule.add(agent)
             self.place_agent_randomly(agent)
 
-        for i in range(num_consumers_councils):
-            agent = ConsumersCouncilAgent(i + num_workers_councils, self)
+        for i in range(self.num_consumers_councils):
+            agent = ConsumersCouncilAgent(i + self.num_workers_councils, self)
             self.schedule.add(agent)
             self.place_agent_randomly(agent)
 
         self.total_matched_proposals = 0
         self.total_unmatched_proposals = 0
         self.time_to_equilibrium = None
+
+    def place_agent_randomly(self, agent):
+        x = random.randrange(self.grid.width)
+        y = random.randrange(self.grid.height)
+        while not self.grid.is_cell_empty((x, y)):
+            x = random.randrange(self.grid.width)
+            y = random.randrange(self.grid.height)
+        self.grid.place_agent(agent, (x, y))
 
     def calculate_global_average_plan(self):
         total_plan = sum(agent.plan for agent in self.schedule.agents)
@@ -156,14 +171,29 @@ class CouncilBasedEconomyModel(Model):
         self.datacollector.collect(self)
         self.schedule.step()
 
-        matched, _, _ = self.proposals_status()
-        if matched == (self.num_workers_councils + self.num_consumers_councils) and self.time_to_equilibrium is None:
-            self.time_to_equilibrium = self.schedule.steps
+        matched, unmatched_consumers, unmatched_workers = self.proposals_status()
+        self.proposal_history.append((matched, unmatched_consumers, unmatched_workers))
+        if len(self.proposal_history) > self.stability_window:
+            self.proposal_history.pop(0)  # Remove oldest record
+
+        if self.check_balanced_proposals() and self.check_stability_in_proposals() and self.check_minimal_unmatched_proposals():
+            self.running = False
 
         self.text_visualization()
 
-        if self.all_proposals_matched():
-            self.running = False
+    def check_balanced_proposals(self):
+        worker_proposals = sum(agent.plan for agent in self.schedule.agents if isinstance(agent, WorkersCouncilAgent))
+        consumer_proposals = sum(agent.plan for agent in self.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
+        return abs(worker_proposals - consumer_proposals) <= self.acceptable_proposal_difference
+
+    def check_stability_in_proposals(self):
+        if len(self.proposal_history) < self.stability_window:
+            return False
+        avg_matched = sum(hist[0] for hist in self.proposal_history) / self.stability_window
+        return all(abs(hist[0] - avg_matched) <= self.acceptable_proposal_difference for hist in self.proposal_history)
+
+    def check_minimal_unmatched_proposals(self):
+        return all(hist[1] + hist[2] <= self.min_unmatched_threshold for hist in self.proposal_history)
 
     def text_visualization(self):
         matched, unmatched_consumers, unmatched_workers = self.proposals_status()
@@ -171,15 +201,18 @@ class CouncilBasedEconomyModel(Model):
         self.total_unmatched_proposals += (unmatched_consumers + unmatched_workers)
 
         print(f"Step: {self.schedule.steps}")
-        print(f"Number of Workers Councils: {self.num_workers_councils}")
-        print(f"Number of Consumers Councils: {self.num_consumers_councils}")
+        print(f"Number of Workers' Councils: {self.num_workers_councils}")
+        print(f"Number of Consumers' Councils: {self.num_consumers_councils}")
         print(f"Worker Adjustment: {self.worker_adjustment}")
         print(f"Consumer Adjustment: {self.consumer_adjustment}")
         print(f"Matched Proposals This Step: {matched}")
-        print(f"Total Matched Proposals: {self.total_matched_proposals}")
         print(f"Unmatched Consumer Proposals This Step: {unmatched_consumers}")
         print(f"Unmatched Worker Proposals This Step: {unmatched_workers}")
+        print(f"Total Matched Proposals: {self.total_matched_proposals}")
         print(f"Total Unmatched Proposals: {self.total_unmatched_proposals}")
+        print(f"Acceptable Proposal Difference: {self.acceptable_proposal_difference}")
+        print(f"Stability Window: {self.stability_window}")
+        print(f"Minimal Unmatched Threshold: {self.min_unmatched_threshold}")
         if self.time_to_equilibrium is not None:
             print(f"Time to Equilibrium: {self.time_to_equilibrium} steps")
         else:
