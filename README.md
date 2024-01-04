@@ -1,6 +1,6 @@
 ![](https://gitlab.com/titancassini/simple-council-economy-mesa-model/-/raw/main/assets/video2248653506.mp4)
 <figure class="video_container">
-  <iframe src="/titancassini/simple-council-economy-mesa-model/-/raw/main/assets/video2248653506.mp4" frameborder="0" allowfullscreen="true"> 
+  <iframe src="https://gitlab.com/titancassini/simple-council-economy-mesa-model/-/raw/main/assets/video2248653506.mp4" frameborder="0" allowfullscreen="true"> 
 </iframe>
 </figure>
 
