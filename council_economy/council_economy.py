@@ -136,8 +136,8 @@ class CouncilBasedEconomyModel(Model):
         self.proposal_history = []
         self.datacollector = DataCollector(
             model_reporters={
-                "Worker Council Production Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
-                "Consumer Council Consumption Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
+                "Worker Council Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
+                "Consumer Council Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
             }
         )
 
