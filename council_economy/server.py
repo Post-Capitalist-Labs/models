@@ -21,8 +21,8 @@ grid_width, grid_height = 20, 20
 canvas_element = CanvasGrid(agent_portrayal, grid_width, grid_height, 500, 500)
 
 chart_element = ChartModule([
-    {"Label": "Worker Council Production Proposals", "Color": "Red"},
-    {"Label": "Consumer Council Consumption Proposals", "Color": "Blue"}
+    {"Label": "Worker Council Proposals", "Color": "Red"},
+    {"Label": "Consumer Council Proposals", "Color": "Blue"}
 ])
 
 model_params = {
