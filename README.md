@@ -1,11 +1,4 @@
-
-
-
 https://github.com/Post-Capitalist-Labs/simple-council-economy/assets/58642686/05794944-6915-4366-8a92-1ca5a15a0d16
-
-
-
-![](https://gitlab.com/titancassini/simple-council-economy-mesa-model/-/raw/main/assets/Screenshot_2023-12-30_at_00.23.36.png?ref_type=heads)
 
 # How to run this model
 
