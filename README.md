@@ -2,7 +2,7 @@ https://github.com/Post-Capitalist-Labs/simple-council-economy/assets/58642686/0
 
 # How to run this model
 
-1. Make sure your local environment has these resources installed:
+1. Make sure your local environment has these resources installed
 - Python 3.12.1 or higher
 - Mesa
 
