@@ -1,0 +1,3 @@
+[submodule "simple-council-economy-mesa-model"]
+	path = simple-council-economy-mesa-model
+	url = https://gitlab.com/titancassini/simple-council-economy-mesa-model.git
