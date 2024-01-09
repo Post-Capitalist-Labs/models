@@ -55,6 +55,10 @@ class CoopModel(Model):
         self.datacollector.collect(self)
         # Tell all the agents in the model to run their step function
         self.schedule.step()
+        # Update network with new interactions
+        self.network = nx.Graph()
+        self.network.add_edges_from(self.interactions)
+
 
 # Instantiate and run the model
 model = CoopModel(N=10)
