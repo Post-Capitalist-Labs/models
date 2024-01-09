@@ -1,4 +1,4 @@
-![ALT](https://gitlab.com/titancassini/simple-council-economy-mesa-model/-/raw/main/assets/Screenshot_2023-12-30_at_00.23.36.png)
+https://github.com/Post-Capitalist-Labs/models/assets/58642686/a0aea644-663f-40b6-a2a5-5e8d1754db7d
 
 # How to run this model
 
