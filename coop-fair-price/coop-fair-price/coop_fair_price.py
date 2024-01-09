@@ -14,7 +14,7 @@ class CoopAgent(Agent):
     def step(self):
         # Agent step to calculate the equitable price
         surplus = self.market_price - self.production_cost
-        alpha = self.calculate_alpha()  # This would be a method to determine alpha based on REA%
+        alpha = self.calculate_alpha()  # Method to determine alpha based on REA% 
         
         if self.REA_percent < 100:
             equity_adjustment = surplus * alpha
@@ -26,7 +26,7 @@ class CoopAgent(Agent):
         self.equitable_price = self.market_price + equity_adjustment
 
     def calculate_alpha(self):
-        # Placeholder for alpha calculation logic based on REA%
+        # Placeholder for alpha calculation logic based on REA%. For options and tradeoffs see https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/calculate_alpha.md
         return 0.1  # As an example, a flat 10% rate
 
 # Define the CoopModel class
