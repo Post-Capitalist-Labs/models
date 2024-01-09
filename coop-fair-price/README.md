@@ -1,6 +1,6 @@
 # Equitable Pricing Formula in a Cooperative Economy
 
-We aim to create an equitable pricing formula in an economy of cooperatives. This formula will redistribute surplus from more economically advantaged co-ops to less advantaged ones to maintain balance and sustainability within the cooperative community.
+Here we modedl an equitable pricing formula in an economy of cooperatives. This formula will redistribute surplus from more economically advantaged co-ops to less advantaged ones to maintain balance and sustainability within the cooperative community.
 
 ## Definitions
 
@@ -17,14 +17,14 @@ Before we construct the formula, let's define some terms:
 
 The equitable price `P_e` for a good or service sold by a co-op is calculated as follows:
 
-P_e = P_m + E
+`P_e = P_m + E`
 
 Where `E` is determined by the co-op's `REA%`:
-E = {
+```E = {
 (S * α) if REA% < 100
 -(S * α) if REA% > 100
 0 if REA% = 100
-}
+}```
 
 
 - Co-ops with `REA% < 100` will charge a higher price to receive additional support.
@@ -35,14 +35,14 @@ The `α (alpha)` could be a fixed rate (e.g., 10%) or a sliding scale that incre
 
 ## Model Implementation
 
-To simulate this formula, we would build an agent-based model using the Mesa framework in Python, with the following components:
+To simulate this formula, we build an agent-based model using the Mesa framework in Python, with the following components:
 
 - **Agents**: Representing the co-op enterprises.
 - **Market**: Mechanism for transactions.
 - **Scheduler**: To control the sequence of events.
 - **DataCollector**: For data gathering and reporting.
 
-The simulation would allow us to analyze the effects of the equitable pricing formula under various scenarios and conditions within the cooperative economy.
+The simulation allows us to analyze the effects of the equitable pricing formula under various scenarios and conditions within the cooperative economy.
 
 ## Conclusion
 
