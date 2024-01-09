@@ -38,6 +38,7 @@ class CoopModel(Model):
     def __init__(self, N):
         self.num_agents = N
         self.schedule = RandomActivation(self)
+        self.interactions = []  # Store interactions here
         # Initialize agents with example data
         for i in range(self.num_agents):
             a = CoopAgent(i, self, production_cost=10, REA_percent=100)
