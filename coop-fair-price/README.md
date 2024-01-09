@@ -10,7 +10,7 @@ Before we construct the formula, let's define some terms:
 - `P_m`: The market price for the good or service in a competitive market without equity adjustments.
 - `S`: The surplus generated from the exchange, calculated as `P_m - C_p`.
 - `REA%`: The Relative Economic Advantage percentage. A value of 100% means no advantage or disadvantage, values above 100% indicate an advantage, and below 100% indicate a disadvantage.
-- `α (alpha)`: A redistribution rate that determines the portion of the surplus to be redistributed. It could be a fixed value or variable depending on `REA%`.
+- `α (alpha)`: A redistribution rate that determines the portion of the surplus to be redistributed. It could be a fixed value or variable depending on `REA%`. [See options being considered for calculating alpha.](https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/calculate_alpha.md)
 - `E`: The equity adjustment amount to be added or subtracted from the market price for the disadvantaged or advantaged co-op, respectively.
 
 ## The Formula
