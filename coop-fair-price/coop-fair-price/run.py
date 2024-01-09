@@ -8,8 +8,8 @@ def network_portrayal(G):
     portrayal['nodes'] = [
         {
             'id': node_id,
-            'size': G.nodes[node_id].get('size', 10),  # Default size if not set
-            'color': "#FF0000" if G.nodes[node_id]['agent'].REA_percent > 100 else "#000000"
+            'size': G.nodes[node_id].get('size', 10),
+            'color': G.nodes[node_id].get('color', "#000000")
         }
         for node_id in G.nodes
     ]
@@ -24,11 +24,11 @@ def network_portrayal(G):
     ]
     return portrayal
 
-network = NetworkModule(network_portrayal, 500, 500)
+network = NetworkModule(network_portrayal, 1000, 1000)
 server = ModularServer(CoopModel,
                        [network],
                        "Cooperative Model",
-                       {"N": Slider("Number of Co-ops", 10, 2, 20, 1),
+                       {"N": Slider("Number of Co-ops", 10, 2, 200, 1),
                         "production_cost": Slider("Production Cost", 10, 5, 20, 1),
                         "REA_percent": Slider("REA Percent", 100, 50, 150, 5),
                         "market_price": Slider("Market Price", 20, 10, 30, 1),
