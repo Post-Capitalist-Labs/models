@@ -11,6 +11,7 @@ class CoopAgent(Agent):
         self.market_price = market_price
         self.equitable_price = None
         self.interactions = []  # Track interactions
+        self.is_economically_advantaged = False
 
     def step(self):
         if self.market_price is None:
@@ -27,13 +28,26 @@ class CoopAgent(Agent):
             equity_adjustment = 0
 
         self.equitable_price = self.market_price + equity_adjustment
-
-        # Update interactions for this step
         next_agent_id = (self.unique_id + 1) % self.model.num_agents
         self.interactions.append(next_agent_id)
 
+        # Update economic status
+        self.update_economic_status()
+
     def calculate_alpha(self):
         return self.model.alpha_value
+
+    def update_economic_status(self):
+        # Define logic to update the agent's economic status
+        # Example: based on equitable_price
+        threshold = 15  # Example threshold
+        self.is_economically_advantaged = self.equitable_price > threshold
+
+    def is_advantaged(self):
+        return self.is_economically_advantaged
+
+    def calculate_size(self):
+        return 15 if self.is_economically_advantaged else 10
 
 class CoopModel(Model):
     def __init__(self, N, production_cost, REA_percent, market_price, alpha_value):
@@ -56,9 +70,10 @@ class CoopModel(Model):
     def step(self):
         self.G.clear()
         for agent in self.schedule.agents:
-            self.G.add_node(agent.unique_id, agent=agent, size=10, color="#000000" if agent.REA_percent <= 100 else "#FF0000")
+            node_color = "#FF0000" if agent.is_advantaged() else "#000000"
+            node_size = agent.calculate_size()
+            self.G.add_node(agent.unique_id, agent=agent, size=node_size, color=node_color)
 
-            # Update edges based on interactions
             for partner_id in agent.interactions:
                 self.G.add_edge(agent.unique_id, partner_id)
 
