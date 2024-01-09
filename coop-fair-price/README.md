@@ -20,12 +20,13 @@ The equitable price `P_e` for a good or service sold by a co-op is calculated as
 `P_e = P_m + E`
 
 Where `E` is determined by the co-op's `REA%`:
-```E = {
+```
+E = {
 (S * α) if REA% < 100
 -(S * α) if REA% > 100
 0 if REA% = 100
-}```
-
+}
+```
 
 - Co-ops with `REA% < 100` will charge a higher price to receive additional support.
 - Co-ops with `REA% > 100` will reduce their price to redistribute their economic benefits.
