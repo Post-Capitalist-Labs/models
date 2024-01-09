@@ -50,6 +50,7 @@ class CoopModel(Model):
         )
 
     def step(self):
+        self.interactions.clear()  # Clear previous step's interactions
         # Collect data
         self.datacollector.collect(self)
         # Tell all the agents in the model to run their step function
