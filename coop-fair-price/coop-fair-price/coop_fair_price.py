@@ -1,6 +1,7 @@
 from mesa import Agent, Model
 from mesa.time import RandomActivation
 from mesa.datacollection import DataCollector
+import networkx as nx
 
 # Define the CoopAgent class
 class CoopAgent(Agent):
@@ -10,19 +11,19 @@ class CoopAgent(Agent):
         self.REA_percent = REA_percent
         self.market_price = None
         self.equitable_price = None
-    
+
     def step(self):
         # Agent step to calculate the equitable price
         surplus = self.market_price - self.production_cost
-        alpha = self.calculate_alpha()  # Method to determine alpha based on REA% 
-        
+        alpha = self.calculate_alpha()  # Method to determine alpha based on REA%
+
         if self.REA_percent < 100:
             equity_adjustment = surplus * alpha
         elif self.REA_percent > 100:
             equity_adjustment = -surplus * alpha
         else:
             equity_adjustment = 0
-        
+
         self.equitable_price = self.market_price + equity_adjustment
 
     def calculate_alpha(self):
@@ -38,7 +39,7 @@ class CoopModel(Model):
         for i in range(self.num_agents):
             a = CoopAgent(i, self, production_cost=10, REA_percent=100)
             self.schedule.add(a)
-        
+
         # Set up data collector
         self.datacollector = DataCollector(
             agent_reporters={"EquitablePrice": "equitable_price"}
