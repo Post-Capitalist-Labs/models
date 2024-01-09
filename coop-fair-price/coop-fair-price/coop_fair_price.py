@@ -25,6 +25,9 @@ class CoopAgent(Agent):
             equity_adjustment = 0
 
         self.equitable_price = self.market_price + equity_adjustment
+        # For simplicity, let's say each agent interacts with the next agent
+        next_agent_id = (self.unique_id + 1) % self.model.num_agents
+        self.model.interactions.append((self.unique_id, next_agent_id))
 
     def calculate_alpha(self):
         # Placeholder for alpha calculation logic based on REA%. For options and tradeoffs see https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/calculate_alpha.md
