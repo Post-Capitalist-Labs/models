@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/Post-Capitalist-Labs/models/main/coop-fair-price/assets/Screenshot%202024-01-10%20at%2009.43.18.png)
+![](https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/assets/Screenshot%202024-01-10%20at%2009.50.29.png?raw=true)
 # Equitable Pricing Formula in a Cooperative Economy
 
 Here we modedl an equitable pricing formula in an economy of cooperatives. This formula will redistribute surplus from more economically advantaged co-ops to less advantaged ones to maintain balance and sustainability within the cooperative community.
