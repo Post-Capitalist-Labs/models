@@ -27,7 +27,7 @@ def network_portrayal(G):
 network = NetworkModule(network_portrayal, 1000, 1000)
 server = ModularServer(CoopModel,
                        [network],
-                       "Cooperative Model",
+                       "Co-op Fair Price Model",
                        {"N": Slider("Number of Co-ops", 10, 2, 200, 1),
                         "production_cost": Slider("Production Cost", 10, 5, 20, 1),
                         "REA_percent": Slider("REA Percent", 100, 50, 150, 5),
