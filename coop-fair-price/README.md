@@ -1,4 +1,5 @@
 ![](https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/assets/Screenshot%202024-01-10%20at%2009.50.29.png?raw=true)
+
 # Equitable Pricing Formula in a Cooperative Economy
 
 Here we model an equitable pricing formula, in an economy of cooperatives. Drawing from the work of Economist Robin Hahnel in "[Reducing Inequities among Worker-Owned Cooperatives: A Proposal](http://www.jstor.org/stable/20642477)", this formula will redistribute surplus from more economically advantaged co-ops to less advantaged ones to maintain balance and sustainability within the cooperative community.
@@ -50,5 +51,14 @@ The simulation allows us to analyze the effects of the equitable pricing formula
 
 This pricing formula and simulation model serve as a foundational approach to fostering equity within a cooperative economic system. It ensures that all members of the community, regardless of their economic standing, can participate and thrive.
 
+# How to run this model
 
+1. Make sure your local environment has these resources installed:
+- Python 3.12.1 or higher
+- Mesa
 
+2. Clone this respo
+3. `cd`into `coop-fair-price`
+4. Run the cmd `mesa runserver` 
+
+A browser based interactive model will laucnh on `http://127.0.0.1:8521/` 
