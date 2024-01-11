@@ -132,8 +132,8 @@ class CouncilBasedEconomyModel(Model):
         self.schedule = RandomActivation(self)
         self.datacollector = DataCollector(
             model_reporters={
-                "Total Production": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
-                "Total Consumption": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
+                "Worker Council Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
+                "Consumer Council Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
             }
         )
 
