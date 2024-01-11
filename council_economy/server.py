@@ -28,18 +28,11 @@ chart_element = ChartModule([
 model_params = {
     "num_workers_councils": Slider("Number of Worker Councils", 100, 1, 200, 1),
     "num_consumers_councils": Slider("Number of Consumer Councils", 100, 1, 200, 1),
-    "worker_adjustment": Slider("Worker Proposals Adjustment", 10, 1, 20, 1),
-    "consumer_adjustment": Slider("Consumer Proposal Adjustment", 10, 1, 20, 1),
-    "acceptable_proposal_difference": Slider("Acceptable Proposal Difference", 10, 0, 50, 1),
-    "stability_window": Slider("Stability Window", 50, 1, 100, 1),
-    "min_unmatched_threshold": Slider("Minimal Unmatched Threshold", 5, 0, 20, 1),
-    "width": grid_width,
-    "height": grid_height
+    "worker_adjustment": Slider("Worker Adjustment", 10, 1, 20, 1),
+    "consumer_adjustment": Slider("Consumer Adjustment", 10, 1, 20, 1),
+    "acceptable_proposal_difference": Slider("Acceptable Proposal Difference", 20, 5, 50, 1),
+    "stability_window": Slider("Stability Window", 200, 50, 500, 1),
+    "min_unmatched_threshold": Slider("Minimal Unmatched Threshold", 10, 1, 20, 1),
 }
 
-server = ModularServer(
-    CouncilBasedEconomyModel,
-    [canvas_element, chart_element],
-    "Council Based Economy Model",
-    model_params
-)
+server = ModularServer(CouncilBasedEconomyModel, [canvas_element, chart_element], "Council Based Economy Model", model_params)

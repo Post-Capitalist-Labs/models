@@ -80,8 +80,8 @@ class CouncilAgent(Agent):
         self.attempts_without_match = 0 if self.met_unmatched else self.attempts_without_match + 1
 
     def record_encounter(self, encountered_plan):
-        self.encountered_proposals.append(encountered_plan)   
-        
+        self.encountered_proposals.append(encountered_plan)
+
     def calculate_global_average_plan(self):
         print("Incorrect method call to calculate_global_average_plan on agent")
         return 0  # Dummy return
@@ -122,22 +122,18 @@ class ConsumersCouncilAgent(CouncilAgent):
         self.adjust_proposal(global_average_plan, 60, 130)
 
 class CouncilBasedEconomyModel(Model):
-    def __init__(self, num_workers_councils, num_consumers_councils, worker_adjustment, consumer_adjustment, width, height, acceptable_proposal_difference, stability_window, min_unmatched_threshold):
+    def __init__(self, num_workers_councils, num_consumers_councils, worker_adjustment, consumer_adjustment, acceptable_proposal_difference, stability_window, min_unmatched_threshold):
         super().__init__()
         self.num_workers_councils = num_workers_councils
         self.num_consumers_councils = num_consumers_councils
         self.worker_adjustment = worker_adjustment
         self.consumer_adjustment = consumer_adjustment
-        self.grid = MultiGrid(width, height, True)
+        self.grid = MultiGrid(20, 20, True) # Fixed grid size
         self.schedule = RandomActivation(self)
-        self.acceptable_proposal_difference = acceptable_proposal_difference
-        self.stability_window = stability_window
-        self.min_unmatched_threshold = min_unmatched_threshold
-        self.proposal_history = []
         self.datacollector = DataCollector(
             model_reporters={
-                "Worker Council Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
-                "Consumer Council Proposals": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
+                "Total Production": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, WorkersCouncilAgent)),
+                "Total Consumption": lambda m: sum(agent.plan for agent in m.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
             }
         )
 
@@ -151,9 +147,15 @@ class CouncilBasedEconomyModel(Model):
             self.schedule.add(agent)
             self.place_agent_randomly(agent)
 
+        self.acceptable_proposal_difference = acceptable_proposal_difference
+        self.stability_window = stability_window
+        self.min_unmatched_threshold = min_unmatched_threshold
         self.total_matched_proposals = 0
         self.total_unmatched_proposals = 0
+        self.proposal_history = []
         self.time_to_equilibrium = None
+        self.matched_proposals_history = []
+        self.total_steps = 0
 
     def place_agent_randomly(self, agent):
         x = random.randrange(self.grid.width)
@@ -170,6 +172,63 @@ class CouncilBasedEconomyModel(Model):
     def step(self):
         self.datacollector.collect(self)
         self.schedule.step()
+        self.total_steps += 1
+
+        self.update_matched_proposals()
+        self.check_proposal_equilibrium()
+        self.check_thresholds_and_windows()
+
+    def proposals_status(self):
+        matched = 0
+        unmatched_consumers = 0
+        unmatched_workers = 0
+
+        for cell in self.grid.coord_iter():
+            agents = cell[0]
+            if len(agents) > 1:
+                if any(isinstance(agent, WorkersCouncilAgent) for agent in agents) and \
+                   any(isinstance(agent, ConsumersCouncilAgent) for agent in agents):
+                    matched += 1
+                else:
+                    unmatched_consumers += sum(1 for agent in agents if isinstance(agent, ConsumersCouncilAgent))
+                    unmatched_workers += sum(1 for agent in agents if isinstance(agent, WorkersCouncilAgent))
+
+        return matched, unmatched_consumers, unmatched_workers
+
+    def all_proposals_matched(self):
+        for cell in self.grid.coord_iter():
+            agents = cell[0]
+            if len(agents) > 1:
+                if any(isinstance(agent, WorkersCouncilAgent) for agent in agents) and \
+                   any(isinstance(agent, ConsumersCouncilAgent) for agent in agents):
+                    continue
+                else:
+                    return False
+        return True
+
+    def update_matched_proposals(self):
+        matched_proposals = 0
+        for cell_contents in self.grid.coord_iter():
+            agents = cell_contents[0]
+            if any(isinstance(agent, WorkersCouncilAgent) for agent in agents) and \
+               any(isinstance(agent, ConsumersCouncilAgent) for agent in agents):
+                matched_proposals += 1
+        self.matched_proposals_history.append(matched_proposals)
+
+    def check_proposal_equilibrium(self):
+        if self.total_steps > 1:  # Avoid division by zero
+            matched_ratio = self.matched_proposals_history[-1] / self.total_steps
+            if matched_ratio >= 0.9:  # 90% matched proposals
+                print(f"Proposal Equilibrium reached at step {self.total_steps}")
+
+    def check_thresholds_and_windows(self):
+        worker_proposals = sum(agent.plan for agent in self.schedule.agents if isinstance(agent, WorkersCouncilAgent))
+        consumer_proposals = sum(agent.plan for agent in self.schedule.agents if isinstance(agent, ConsumersCouncilAgent))
+        proposal_diff = abs(worker_proposals - consumer_proposals)
+
+        if len(self.matched_proposals_history) >= max(self.num_workers_councils, self.num_consumers_councils):
+            if proposal_diff <= worker_proposals * 0.2:  # 20% threshold
+                print(f"Threshold and Stability Window reached at step {self.total_steps}")
 
         matched, unmatched_consumers, unmatched_workers = self.proposals_status()
         self.proposal_history.append((matched, unmatched_consumers, unmatched_workers))
@@ -210,6 +269,7 @@ class CouncilBasedEconomyModel(Model):
         print(f"Unmatched Worker Proposals This Step: {unmatched_workers}")
         print(f"Total Matched Proposals: {self.total_matched_proposals}")
         print(f"Total Unmatched Proposals: {self.total_unmatched_proposals}")
+        print(f"Proposal History: {self.proposal_history}")
         print(f"Acceptable Proposal Difference: {self.acceptable_proposal_difference}")
         print(f"Stability Window: {self.stability_window}")
         print(f"Minimal Unmatched Threshold: {self.min_unmatched_threshold}")
@@ -218,39 +278,3 @@ class CouncilBasedEconomyModel(Model):
         else:
             print("Equilibrium not yet reached.")
         print("-----------------------------------")
-
-    def proposals_status(self):
-        matched = 0
-        unmatched_consumers = 0
-        unmatched_workers = 0
-
-        for cell in self.grid.coord_iter():
-            agents = cell[0]
-            if len(agents) > 1:
-                if any(isinstance(agent, WorkersCouncilAgent) for agent in agents) and \
-                   any(isinstance(agent, ConsumersCouncilAgent) for agent in agents):
-                    matched += 1
-                else:
-                    unmatched_consumers += sum(1 for agent in agents if isinstance(agent, ConsumersCouncilAgent))
-                    unmatched_workers += sum(1 for agent in agents if isinstance(agent, WorkersCouncilAgent))
-
-        return matched, unmatched_consumers, unmatched_workers
-
-    def all_proposals_matched(self):
-        for cell in self.grid.coord_iter():
-            agents = cell[0]
-            if len(agents) > 1:
-                if any(isinstance(agent, WorkersCouncilAgent) for agent in agents) and \
-                   any(isinstance(agent, ConsumersCouncilAgent) for agent in agents):
-                    continue
-                else:
-                    return False
-        return True
-
-    def place_agent_randomly(self, agent):
-        x = random.randrange(self.grid.width)
-        y = random.randrange(self.grid.height)
-        while not self.grid.is_cell_empty((x, y)):
-            x = random.randrange(self.grid.width)
-            y = random.randrange(self.grid.height)
-        self.grid.place_agent(agent, (x, y))
