@@ -1,4 +1,4 @@
-# Modelling the Mechanism Design of an Autonomous Society
+# Modeling the Mechanism Design of an Autonomous Society
 
 The models below are proposed to iterate on the "[Mechanism Design for an Autonomous Society](https://github.com/Post-Capitalist-Labs/post-capitalist-cryptoeconomics/blob/main/Chapter_9/chapter_9.md)" oultined in our [Post-Capitalist Cryptoeconomics](https://github.com/Post-Capitalist-Labs/post-capitalist-cryptoeconomics/tree/main). 
 
