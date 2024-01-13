@@ -1,3 +1,4 @@
+import argparse
 from mesa import Agent, Model
 from mesa.time import RandomActivation
 from mesa.space import MultiGrid
@@ -278,3 +279,37 @@ class CouncilBasedEconomyModel(Model):
         else:
             print("Equilibrium not yet reached.")
         print("-----------------------------------")
+
+        # For printing to stdout, you can print your desired output here
+        # Example:
+        matched, unmatched_consumers, unmatched_workers = self.proposals_status()
+        print(f"Step {self.schedule.steps}: Matched: {matched}, Unmatched Consumers: {unmatched_consumers}, Unmatched Workers: {unmatched_workers}")
+
+    # Function to run the model with command-line arguments
+    def run_model(args):
+        model = CouncilBasedEconomyModel(
+            num_workers_councils=args.num_workers_councils,
+            num_consumers_councils=args.num_consumers_councils,
+            worker_adjustment=args.worker_adjustment,
+            consumer_adjustment=args.consumer_adjustment,
+            acceptable_proposal_difference=args.acceptable_proposal_difference,
+            stability_window=args.stability_window,
+            min_unmatched_threshold=args.min_unmatched_threshold
+        )
+
+        for _ in range(args.num_steps):
+            model.step()
+
+    if __name__ == "__main__":
+        parser = argparse.ArgumentParser(description="Run the Council Based Economy Model")
+        parser.add_argument("--num_workers_councils", type=int, default=100)
+        parser.add_argument("--num_consumers_councils", type=int, default=100)
+        parser.add_argument("--worker_adjustment", type=int, default=10)
+        parser.add_argument("--consumer_adjustment", type=int, default=10)
+        parser.add_argument("--acceptable_proposal_difference", type=int, default=20)
+        parser.add_argument("--stability_window", type=int, default=200)
+        parser.add_argument("--min_unmatched_threshold", type=int, default=10)
+        parser.add_argument("--num_steps", type=int, default=100, help="Number of steps to run the model")
+
+        args = parser.parse_args()
+        run_model(args)
