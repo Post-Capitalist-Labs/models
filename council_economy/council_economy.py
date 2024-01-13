@@ -270,7 +270,7 @@ class CouncilBasedEconomyModel(Model):
         print(f"Unmatched Worker Proposals This Step: {unmatched_workers}")
         print(f"Total Matched Proposals: {self.total_matched_proposals}")
         print(f"Total Unmatched Proposals: {self.total_unmatched_proposals}")
-        print(f"Proposal History: {self.proposal_history}")
+        # COMMENTED OUT AS OUTPUTS DUPLICATE DATA:  print(f"Proposal History: {self.proposal_history}")
         print(f"Acceptable Proposal Difference: {self.acceptable_proposal_difference}")
         print(f"Stability Window: {self.stability_window}")
         print(f"Minimal Unmatched Threshold: {self.min_unmatched_threshold}")
@@ -282,8 +282,9 @@ class CouncilBasedEconomyModel(Model):
 
         # For printing to stdout, you can print your desired output here
         # Example:
-        matched, unmatched_consumers, unmatched_workers = self.proposals_status()
-        print(f"Step {self.schedule.steps}: Matched: {matched}, Unmatched Consumers: {unmatched_consumers}, Unmatched Workers: {unmatched_workers}")
+        # COMMENTED OUT AS OUTPUTS DUPLICATE DATA:
+        # matched, unmatched_consumers, unmatched_workers = self.proposals_status()
+        # print(f"Step {self.schedule.steps}: Matched: {matched}, Unmatched Consumers: {unmatched_consumers}, Unmatched Workers: {unmatched_workers}")
 
     # Function to run the model with command-line arguments
     def run_model(args):
