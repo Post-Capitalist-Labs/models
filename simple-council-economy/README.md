@@ -1,36 +1,5 @@
 https://github.com/Post-Capitalist-Labs/models/assets/58642686/a0aea644-663f-40b6-a2a5-5e8d1754db7d
 
-# How to run this model
-
-1. Make sure your local environment has these resources installed:
-- Python 3.12.1 or higher
-- Mesa
-
-2. Clone this respo
-3. `cd`into `council_economy`
-4. Run the cmd `mesa runserver` 
-
-
-Upon running you will see: 
-- a browser based interactive model running on `http://127.0.0.1:8521/` 
- - terminal logs output from `text_visualization`: 
-```-----------------------------------
-{"type":"get_step","step":856}
-Step: 856
-Number of Workers Councils: 100
-Number of Consumers Councils: 91
-Worker Adjustment: 10
-Consumer Adjustment: 10
-Matched Proposals This Step: 22
-Total Matched Proposals: 15279
-Unmatched Consumer Proposals This Step: 68
-Unmatched Worker Proposals This Step: 76
-Total Unmatched Proposals: 129293
-Equilibrium not yet reached.
------------------------------------
-```
-To contribute fork this repo and submit a pull request with your changes.
-
 # About this model
 
  A simple council-based economy model comprising worker and consumer councils. Each council will make proposals regarding production and consumption, and the model will iterate these proposals until a balance is achieved between supply and demand. We'll set up 100 workers' councils and 100 consumers' councils as specified.
@@ -87,3 +56,35 @@ To effectively challenge and validate this model of a council-based economy, whe
 
 ### Conclusion
 By exploring these different approaches, you can challenge this model under a variety of conditions and gain a deeper understanding of the dynamics and feasibility of a council-based economic system. The key is to identify parameters that significantly impact the model's behavior and explore their implications in depth.
+
+# How to run this model
+
+1. Make sure your local environment has these resources installed:
+- Python 3.12.1 or higher
+- Mesa
+
+2. Clone this respo
+3. `cd`into `council_economy`
+4. Run the cmd `mesa runserver` 
+
+
+Upon running you will see: 
+- a browser based interactive model running on `http://127.0.0.1:8521/` 
+ - terminal logs output from `text_visualization`: 
+```-----------------------------------
+{"type":"get_step","step":856}
+Step: 856
+Number of Workers Councils: 100
+Number of Consumers Councils: 91
+Worker Adjustment: 10
+Consumer Adjustment: 10
+Matched Proposals This Step: 22
+Total Matched Proposals: 15279
+Unmatched Consumer Proposals This Step: 68
+Unmatched Worker Proposals This Step: 76
+Total Unmatched Proposals: 129293
+Equilibrium not yet reached.
+-----------------------------------
+```
+To contribute fork this repo and submit a pull request with your changes.
+
