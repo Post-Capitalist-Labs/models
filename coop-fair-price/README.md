@@ -1,4 +1,5 @@
 ![](https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/assets/Screenshot%202024-01-10%20at%2009.50.29.png?raw=true)
+<i>Screenshot: Red nodes indicate advantaged co-ops while black nodes indicate disadvantaged co-ops</i> 
 
 # Equitable Pricing Formula in a Cooperative Economy
 
