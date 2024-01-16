@@ -17,7 +17,7 @@ mkdir -p $output_dir
 run_simulation() {
     filename="${output_dir}/sim_${1}_${2}_${3}_${4}_${5}_${6}_${7}.txt"
     echo "Running simulation with parameters: $1 $2 $3 $4 $5 $6 $7"
-    python council_economy.py $1 $2 $3 $4 $5 $6 $7 > $filename
+    python3 council_economy.py $1 $2 $3 $4 $5 $6 $7 > $filename
 }
 
 # Loop through parameter ranges to run simulations
