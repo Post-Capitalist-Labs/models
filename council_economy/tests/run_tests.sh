@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Call the Python script to set up the Python path
+python3 setup_python_path.py
+
 # Define ranges for parameters
 num_workers_councils_range=(50 100 150)
 num_consumers_councils_range=(50 100 150)
@@ -17,7 +20,7 @@ mkdir -p $output_dir
 run_simulation() {
     filename="${output_dir}/sim_${1}_${2}_${3}_${4}_${5}_${6}_${7}.txt"
     echo "Running simulation with parameters: $1 $2 $3 $4 $5 $6 $7"
-    python3 council_economy.py $1 $2 $3 $4 $5 $6 $7 > $filename
+    python3 ../council_economy/council_economy.py --num_workers_councils $1 --num_consumers_councils $2 --worker_adjustment $3 --consumer_adjustment $4 --acceptable_proposal_difference $5 --stability_window $6 --min_unmatched_threshold $7 > $filename
 }
 
 # Loop through parameter ranges to run simulations
