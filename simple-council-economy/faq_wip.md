@@ -76,7 +76,7 @@ total_simulations
 ```
 This is an extremely large number and suggests that exploring every single combination of these parameter ranges would be impractical.
 
-### Q. What would be a more practicle way to sample, survey or spot check that the range of possabilities in these simulations, in a meaningful way?
+### Q. What would be a more practicle way to sample, survey or spot check the range of possabilities in these simulations?
 A. Running a comprehensive simulation for every possible combination of parameters in the given ranges is indeed impractical due to the sheer number of simulations required. To meaningfully explore the range of possibilities without running an unfeasibly large number of simulations, consider the following approaches:
 
 1. **Random Sampling**: Randomly select a set number of parameter combinations to simulate. This method ensures a broad, unbiased coverage across the parameter space but may miss some specific combinations of interest.
