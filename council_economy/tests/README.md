@@ -6,10 +6,10 @@ You can also run the council_economy.py script from the command line with specif
 `python council_economy.py --num_workers_councils 100 --num_consumers_councils 100 --worker_adjustment 10 --consumer_adjustment 10 --acceptable_proposal_difference 20 --stability_window 200 --min_unmatched_threshold 10 --num_steps 100`
 
 # Important note
-To run every possible combination of parameters based on the provided ranges, the script would need to perform approximately 6,638,720,000,000 simulations. 
+To run every possible combination of parameters based on the model's sliders, the script would need to perform approximately 6,638,720,000,000 simulations. 
 
 ```python
-# Defining the ranges for each parameter based on the provided sliders
+# Defining the ranges for each parameter based on the sliders
 num_workers_councils_range = range(1, 201)  # 1 to 200
 num_consumers_councils_range = range(1, 201)  # 1 to 200
 worker_adjustment_range = range(1, 21)  # 1 to 20
