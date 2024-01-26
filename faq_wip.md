@@ -49,10 +49,10 @@ When the simulation stops with unmatched proposals, it offers valuable insights 
 ## Tooling for bulk simulations
 
 ### Q. How many simulations would the script have to run to run every possible combination of parameters?
-A. To run every possible combination of parameters based on the provided ranges, the script would need to perform approximately 6,638,720,000,000 simulations. 
+A. To run every possible combination of parameters based on the model's sliders, the script would need to perform approximately 6,638,720,000,000 simulations. 
 
 ```python
-# Defining the ranges for each parameter based on the provided sliders
+# Defining the ranges for each parameter based on the sliders
 num_workers_councils_range = range(1, 201)  # 1 to 200
 num_consumers_councils_range = range(1, 201)  # 1 to 200
 worker_adjustment_range = range(1, 21)  # 1 to 20
