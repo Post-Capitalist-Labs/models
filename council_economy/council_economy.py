@@ -43,13 +43,6 @@ class CouncilAgent(Agent):
         self.plan = max(min_value, min(max_value, self.plan))
         print(f"Agent {self.unique_id} adjusted plan from {old_plan} to {self.plan}")
 
-        # Feedback Mechanism: Incorporate success/failure history into adjustment
-        if self.met_unmatched:
-            self.plan += self.calculate_feedback_adjustment()
-        else:
-            self.plan -= self.calculate_feedback_adjustment()
-        self.plan = max(min_value, min(max_value, self.plan))
-
     def calculate_learning_factor(self):
         max_learning_rate = 0.5  # Maximum learning rate
         increase_per_attempt = 0.01  # Increase in learning rate per unmatched attempt
