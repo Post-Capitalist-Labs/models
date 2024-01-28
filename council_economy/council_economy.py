@@ -26,8 +26,8 @@ class CouncilAgent(Agent):
         self.plan += (global_average - self.plan) * learning_factor
         self.plan = max(min_value, min(self.plan, max_value))
         global_average = self.model.calculate_global_average_plan()
-        self.plan = (self.plan + global_average) // 2  # Move towards the global average
-        self.plan += random.randint(-5, 5)  # Random fluctuation
+        self.plan = (self.plan * 1 + global_average * 2) // 3  # Weight the global average X 2. Move towards the global average
+        self.plan += random.randint(-1, 1)  # Random fluctuation
         self.plan = max(min_value, min(max_value, self.plan))
         target_plan = self.calculate_target_plan()
         distance = abs(self.plan - target_plan)
@@ -49,12 +49,11 @@ class CouncilAgent(Agent):
         self.plan = max(min_value, min(max_value, self.plan))
 
     def calculate_learning_factor(self):
-            # Implement a learning factor based on past encounters
-            if not self.encountered_proposals:
-                return 1  # Default factor if no encounters
+        max_learning_rate = 0.2  # Maximum learning rate
+        increase_per_attempt = 0.01  # Increase in learning rate per unmatched attempt
 
-            # Calculate learning factor based on historical data
-            return sum(self.encountered_proposals) / len(self.encountered_proposals) / self.plan
+        # The learning factor increases with each unmatched attempt, up to a maximum
+        return min(max_learning_rate, increase_per_attempt * self.attempts_without_match)
 
     def calculate_target_plan(self):
         if not self.encountered_proposals:
