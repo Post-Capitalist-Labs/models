@@ -49,19 +49,16 @@ class CouncilAgent(Agent):
         self.plan = max(min_value, min(max_value, self.plan))
 
     def calculate_learning_factor(self):
-        max_learning_rate = 0.2  # Maximum learning rate
+        max_learning_rate = 0.5  # Maximum learning rate
         increase_per_attempt = 0.01  # Increase in learning rate per unmatched attempt
 
         # The learning factor increases with each unmatched attempt, up to a maximum
         return min(max_learning_rate, increase_per_attempt * self.attempts_without_match)
 
     def calculate_target_plan(self):
-        if not self.encountered_proposals:
-            return self.plan  # Return current plan if no encounters
-
-        average_encounter = sum(self.encountered_proposals) / len(self.encountered_proposals)
-        target = average_encounter * 0.8  # Targeting less than 5 proposals per agent
-        return target
+        # Use a simple global metric, like the average of all current plans
+        global_average_plan = self.model.calculate_global_average_plan()
+        return global_average_plan
 
     def move_towards_unmatched(self, adjustment):
         max_steps = adjustment // 2
