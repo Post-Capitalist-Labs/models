@@ -21,6 +21,8 @@ class CouncilAgent(Agent):
             self.attempts_without_match = 0
 
     def adjust_proposal(self, global_average, min_value, max_value):
+        fixed_adjustment = 5  # A fixed adjustment value
+        self.plan += fixed_adjustment # Apply the fixed adjustment
         old_plan = self.plan
         learning_factor = self.calculate_learning_factor()
         self.plan += (global_average - self.plan) * learning_factor
@@ -56,7 +58,7 @@ class CouncilAgent(Agent):
         return min(max_learning_rate, increase_per_attempt * self.attempts_without_match)
 
     def calculate_target_plan(self):
-        # Use a simple global metric, like the average of all current plans
+        # Use a global metric, like the average of all current plans
         global_average_plan = self.model.calculate_global_average_plan()
         return global_average_plan
 
