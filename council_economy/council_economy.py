@@ -22,7 +22,7 @@ class CouncilAgent(Agent):
 
     def adjust_proposal(self, global_average, min_value, max_value):
         min_value = 0   # Example of a widened minimum value
-        max_value = 200 # Example of a widened maximum value
+        max_value = 100 # Example of a widened maximum value
         fixed_adjustment = 5  # A fixed adjustment value
         self.plan += fixed_adjustment # Apply the fixed adjustment
         old_plan = self.plan
