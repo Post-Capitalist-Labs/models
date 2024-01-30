@@ -24,21 +24,21 @@ def aggregate_data(directory):
 # Aggregate data.
 # Uncomment according to data you want aggregated.
 # df = aggregate_data("simulation_outputs")
-# df = aggregate_data("simulation_outputs/Baseline")
+df = aggregate_data("simulation_outputs/Baseline")
 # df = aggregate_data("simulation_outputs/Crisis")
 # df = aggregate_data("simulation_outputs/High_Activity")
 # df = aggregate_data("simulation_outputs/High_Tolerance_Mismatch")
 # df = aggregate_data("simulation_outputs/Low_Activity")
 # df = aggregate_data("simulation_outputs/Low_Tolerance_Mismatch")
-df = aggregate_data("simulation_outputs/Optimal_Balance_Search")
+# df = aggregate_data("simulation_outputs/Optimal_Balance_Search")
 
 # Dump data to CSV
 # Uncomment according to filename.
-# df.to_csv("output_aggregated_data.csv", index=False)
-# df.to_csv("Baseline_data.csv", index=False)
-# df.to_csv("Crisis_data.csv", index=False)
-# df.to_csv("High_Activity_data.csv", index=False)
-# df.to_csv("High_Tolerance_Mismatch_data.csv", index=False)
-# df.to_csv("Low_Activity_data.csv", index=False)
-# df.to_csv("Low_Tolerance_Mismatch_data.csv", index=False)
-df.to_csv("Optimal_Balance_Search_data.csv", index=False)
+# df.to_csv("simulation_outputs/output_aggregated_data.csv", index=False)
+df.to_csv("simulation_outputs/Baseline_data.csv", index=False)
+# df.to_csv("simulation_outputs/Crisis_data.csv", index=False)
+# df.to_csv("simulation_outputs/High_Activity_data.csv", index=False)
+# df.to_csv("simulation_outputs/High_Tolerance_Mismatch_data.csv", index=False)
+# df.to_csv("simulation_outputs/Low_Activity_data.csv", index=False)
+# df.to_csv("simulation_outputs/Low_Tolerance_Mismatch_data.csv", index=False)
+# df.to_csv("simulation_outputs/Optimal_Balance_Search_data.csv", index=False)

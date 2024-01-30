@@ -297,11 +297,12 @@ class CouncilBasedEconomyModel(Model):
         # COMMENTED OUT AS OUTPUTS DUPLICATE DATA:  print(f"Proposal History: {self.proposal_history}")
         print(f"Acceptable Proposal Difference: {self.acceptable_proposal_difference},")
         print(f"Stability Window: {self.stability_window},")
-        print(f"Minimal Unmatched Threshold: {self.min_unmatched_threshold},")
-        if self.time_to_equilibrium is not None:
-            print(f"Time to overall equilibrium: {self.time_to_equilibrium} steps",)
-        else:
-            print("Overall equilibrium not yet reached.")
+        print(f"Minimal Unmatched Threshold: {self.min_unmatched_threshold}")
+        # Commented out till overall eqaulibrium is refined.
+        # if self.time_to_equilibrium is not None:
+        #    print(f"Time to overall equilibrium: {self.time_to_equilibrium} steps",)
+        # else:
+        #    print("Overall equilibrium not yet reached.")
         print("-----------------------------------")
 
         # For printing to stdout, you can print your desired output here
