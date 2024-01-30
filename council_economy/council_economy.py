@@ -66,6 +66,9 @@ class CouncilAgent(Agent):
             self.model.grid.move_agent(self, new_position)
 
     def check_for_potential_matches(self):
+        if self.pos is None:
+            print(f"Agent {self.unique_id} has no position.")
+            return  # Skip further processing for this agent
         cellmates = self.model.grid.get_cell_list_contents([self.pos])
         if isinstance(self, WorkersCouncilAgent):
             self.met_unmatched = any(isinstance(agent, ConsumersCouncilAgent) for agent in cellmates)
@@ -152,12 +155,40 @@ class CouncilBasedEconomyModel(Model):
         self.total_steps = 0
 
     def place_agent_randomly(self, agent):
-        x = random.randrange(self.grid.width)
-        y = random.randrange(self.grid.height)
-        while not self.grid.is_cell_empty((x, y)):
+        max_attempts = 200  # Set a maximum number of attempts
+        attempt = 0
+
+        while attempt < max_attempts:
             x = random.randrange(self.grid.width)
             y = random.randrange(self.grid.height)
-        self.grid.place_agent(agent, (x, y))
+            if self.grid.is_cell_empty((x, y)):
+               self.grid.place_agent(agent, (x, y))
+               return
+            attempt += 1
+
+         # If an empty cell is not found, expand the grid size
+        print("Attempting to expand grid...")  # Debug print
+        self.expand_grid()
+        self.place_agent_randomly(agent)  # Retry placing the agent
+
+    def expand_grid(self):
+        print("Expanding grid...")  # Debug print
+
+        # Determine the new size; here we're increasing by a fixed amount
+        new_width = self.grid.width + 10
+        new_height = self.grid.height + 10
+
+        # Create a new grid with the new size
+        new_grid = MultiGrid(new_width, new_height, True)
+
+        # Transfer agents from the old grid to the new grid
+        for cell in self.grid.coord_iter():
+            cell_content, (x, y) = cell  # Corrected unpacking
+            for agent in cell_content:
+                new_grid.place_agent(agent, (x, y))
+
+        # Replace the old grid with the new grid
+        self.grid = new_grid
 
     def calculate_global_average_plan(self):
         total_plan = sum(agent.plan for agent in self.schedule.agents)
@@ -268,9 +299,9 @@ class CouncilBasedEconomyModel(Model):
         print(f"Stability Window: {self.stability_window},")
         print(f"Minimal Unmatched Threshold: {self.min_unmatched_threshold},")
         if self.time_to_equilibrium is not None:
-            print(f"Time to Equilibrium: {self.time_to_equilibrium} steps",)
+            print(f"Time to overall equilibrium: {self.time_to_equilibrium} steps",)
         else:
-            print("Equilibrium not yet reached.,")
+            print("Overall equilibrium not yet reached.")
         print("-----------------------------------")
 
         # For printing to stdout, you can print your desired output here
@@ -281,6 +312,7 @@ class CouncilBasedEconomyModel(Model):
 
 # Function to run the model with command-line arguments
 def run_model(args):
+    print("Running model...")  # Debug print
     model = CouncilBasedEconomyModel(
         num_workers_councils=args.num_workers_councils,
         num_consumers_councils=args.num_consumers_councils,
