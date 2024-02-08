@@ -53,7 +53,7 @@ The potential number of simulations, given the parameter ranges defined by the m
 
 ## Contributing Your Simulations
 
-We encourage users to run their own bulk simulations and analysis. The repository includes data from bulk scenario simulations for initial exploration. However, users are invited to share their own data and insights, which could potentially be added to the project. If you use our bulk simulation tools, we would love to see your data and analysis.
+We encourage users to run their own bulk simulations and analysis. The repository [includes data from bulk scenario simulations for initial exploration](council_economy/tests/simulation_outputs). However, users are invited to share their own data and insights, which could potentially be added to the project. If you use our bulk simulation tools, we would love to see your data and analysis.
 
 ## Link to Full Text on Bulk Simulation Tools
 
