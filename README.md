@@ -57,7 +57,7 @@ We encourage users to run their own bulk simulations and analysis. The repositor
 
 ## Link to Full Text on Bulk Simulation Tools
 
-For detailed information on how to utilize the bulk simulation tools effectively, including examples of specific scenarios and sampling techniques, [please refer to the full text in the README.md document](council_economy/tests/README.md).
+For detailed information on how to utilize the bulk simulation tools effectively, including examples of specific scenarios and sampling techniques, [please refer to the full text in the  tests README.md document](council_economy/tests/README.md).
 
 The addition of bulk simulation tools to the Simple Council Economy model v0.02 opens up new avenues for comprehensive analysis and exploration of council-based economic systems. By leveraging these tools, researchers and enthusiasts can gain deeper insights into the viability and efficiency of such systems under a wide range of conditions. We look forward to seeing the community's contributions and insights as we continue to develop and refine this model.
 
