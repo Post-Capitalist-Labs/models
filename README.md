@@ -1,89 +1,46 @@
-![ALT](https://gitlab.com/titancassini/simple-council-economy-mesa-model/-/raw/main/assets/Screenshot_2023-12-30_at_00.23.36.png)
+# Simple Council Economy Model v0.02
 
-# How to run this model
+The Simple Council Economy model v0.02 builds on the foundational framework introduced in v0.01, maintaining the concept of worker and consumer councils that make proposals regarding production and consumption. This version incorporates enhanced feedback mechanisms and equilibrium tracking features to more closely simulate the dynamics of a council-based economy. The model iterates these proposals towards achieving a balance between supply and demand, reflecting a more nuanced approach to reaching equilibrium.
 
-1. Make sure your local environment has these resources installed:
-- Python 3.12.1 or higher
-- Mesa
+## Enhanced Features in v0.02
 
-2. Clone this respo
-3. `cd`into `council_economy`
-4. Run the cmd `mesa runserver` 
+- **Feedback Mechanism Improvements**: Agents now incorporate a more sophisticated feedback loop in their proposal adjustments, taking into account their past encounters to refine future proposals.
+- **Equilibrium Tracking**: Additional attributes track the time to reach various forms of equilibrium, such as balanced proposals, matched versus unmatched proposals, and stability in adjustments. This allows for a deeper analysis of the model's dynamics over time.
+- **Improved Proposal Adjustment Logic**: The logic for adjusting proposals has been refined, including a learning factor based on past encounters and a more dynamic adjustment mechanism that responds to the distance from target plans and global averages.
 
+## Model Components
 
-Upon running you will see: 
-- a browser based interactive model running on `http://127.0.0.1:8521/` 
- - terminal logs output from `text_visualization`: 
-```-----------------------------------
-{"type":"get_step","step":856}
-Step: 856
-Number of Workers Councils: 100
-Number of Consumers Councils: 91
-Worker Adjustment: 10
-Consumer Adjustment: 10
-Matched Proposals This Step: 22
-Total Matched Proposals: 15279
-Unmatched Consumer Proposals This Step: 68
-Unmatched Worker Proposals This Step: 76
-Total Unmatched Proposals: 129293
-Equilibrium not yet reached.
------------------------------------
-```
-To contribute fork this repo and submit a pull request with your changes.
+- **CouncilAgent**: Represents both worker and consumer councils, each starting with a random initial proposal.
+- **WorkersCouncilAgent** and **ConsumersCouncilAgent**: Subclasses of CouncilAgent with specific initial proposal ranges and step functions.
+- **CouncilBasedEconomyModel**: The main model class that initializes the agents and runs the simulation, tracking the overall state of the economy.
 
-# About this model
+## How to Use This Model
 
- A simple council-based economy model comprising worker and consumer councils. Each council will make proposals regarding production and consumption, and the model will iterate these proposals until a balance is achieved between supply and demand. We'll set up 100 workers' councils and 100 consumers' councils as specified.
+To explore the dynamics of a council-based economy and test its efficiency and viability under various conditions, you can adjust parameters and introduce different scenarios:
 
-- **WorkersCouncilAgent** and **ConsumersCouncilAgent**:
-  - Each starts with a random initial proposal for production and consumption, respectively.
-- **Adjustment Process**:
-  - In each step, agents adjust their plans based on simplified logic, such as random adjustments in this example.
-  - For a more detailed model, adjustments would involve complex interactions based on actual economic factors.
-- **Model Execution**:
-  - The model runs for a specified number of steps.
-  - After each step, it prints the total production and consumption across all councils.
-  - In a more complex version, the iteration would continue until the total production closely matches the total consumption.
-- **Framework and Realism**:
-  - This code serves as a foundational framework.
-  - To enhance realism, detailed mechanisms for proposal adjustment based on feedback from the other type of council need to be implemented.
-- **Mesa Model and Future Development**:
-  - This Mesa model provides a basic simulation of the proposed council-based economy.
-  - It allows for further complexity and detail to be added as needed.
+### Running the Model
 
+1. Ensure Python 3.12.1 or higher and Mesa are installed in your environment.
+2. Clone the repository and navigate to the `council_economy` directory.
+3. Execute `mesa runserver` in your command line.
 
-## Ways to use this model
-To effectively challenge and validate this model of a council-based economy, where workers and consumers democratically plan production and consumption without a central authority or market mechanisms, you can experiment with various parameters and scenarios. The goal is to explore how different conditions affect the efficiency and viability of such an economy. Here are several approaches to consider:
+### Interactive Model and Visualization
 
-### 1. Adjusting Adjustment Factors
-- **Varying Adjustment Levels**: Experiment with different ranges for `worker_adjustment` and `consumer_adjustment`. These adjustments simulate the degree of flexibility or responsiveness in production and consumption plans. Test scenarios with very rigid plans (small adjustments) and very flexible plans (large adjustments) to observe how this impacts the time taken to reach an equilibrium.
-- **Asymmetric Adjustments**: Try scenarios where one group (either workers or consumers) is more flexible than the other. This could simulate real-world scenarios where, for example, consumer demand is more volatile than production capacity.
+Upon running, you'll access:
+- A browser-based interactive model at `http://127.0.0.1:8521/`.
+- Terminal logs output from `text_visualization`, providing detailed insights into each simulation step.
 
-### 2. Changing the Number of Councils
-- **Scale Variations**: Test how the model behaves with different numbers of workers' and consumers' councils. A larger number of councils could represent a more decentralized economy. Observe how this decentralization impacts the time taken to reach a consensus.
-- **Imbalance in Council Numbers**: Create scenarios where the number of workers' councils significantly differs from the number of consumers' councils. This could highlight challenges in coordination and agreement when one side of the economic equation is more heavily represented than the other.
+### Experimentation Suggestions
 
-### 3. Introducing External Influences
-- **Random Events**: Introduce random events that could affect production or consumption plans, like natural disasters, technological breakthroughs, or changes in consumer preferences. This can test the resilience and adaptability of the council-based model.
-- **Gradual Changes**: Implement gradual changes in the environment, like slowly increasing consumer preferences for certain goods, to see if the councils can adapt over time.
+- **Adjust Proposal Adjustments**: Modify the range and logic of adjustments to explore different equilibrium dynamics.
+- **Vary Council Numbers**: Test the model with different numbers of worker and consumer councils to analyze effects on decentralization and consensus time.
+- **Introduce External Factors**: Simulate random events or gradual changes in the environment to assess the model's resilience.
+- **Analyze Stability and Efficiency**: Measure the time to equilibrium and the stability of economic plans over extended periods.
 
-### 4. Analyzing Different Metrics
-- **Time to Equilibrium**: Measure how long it takes for production and consumption proposals to match. This is a direct measure of the efficiency of the economic planning process.
-- **Stability Over Time**: Run the simulation for extended periods even after the first equilibrium is reached to observe the stability of the economic plan. Frequent mismatches after achieving initial equilibrium could indicate a lack of sustainability.
+### Contribution
 
-### 5. Scenario Simulations
-- **Crisis Scenarios**: Simulate economic crises, such as sudden drops in production capabilities or spikes in consumer demand, to test the robustness of the council-based system.
-- **Comparative Analysis**: Run the council-based model against a simulated market-based or centrally planned model under identical conditions. This comparative approach can provide insights into the relative strengths and weaknesses of each system.
+Fork this repository and submit a pull request with your enhancements or fixes to contribute to the model's development.
 
-### 6. Parameter Sweeps
-- **Systematic Variation**: Perform parameter sweeps where you systematically vary key parameters (like the number of councils, adjustment levels, etc.) and observe the outcomes. This can help identify thresholds or tipping points in the model’s behavior.
+## Conclusion
 
-### 7. Visualization and Data Analysis
-- **Visualization Tools**: Utilize different visualization tools to observe the dynamics of the model over time. Heatmaps, time-series graphs, and network diagrams can provide valuable insights.
-- **Statistical Analysis**: Apply statistical analysis to the simulation data to understand trends, correlations, and variability in the model’s performance under different conditions.
-
-### 8. Incorporating Feedback Mechanisms
-- **Learning Algorithms**: Implement simple learning algorithms for agents to adjust their behavior based on past experiences. This could simulate learning and adaptation within councils.
-
-### Conclusion
-By exploring these different approaches, you can challenge this model under a variety of conditions and gain a deeper understanding of the dynamics and feasibility of a council-based economic system. The key is to identify parameters that significantly impact the model's behavior and explore their implications in depth.
+The Simple Council Economy model v0.02 offers a more complex simulation environment for studying the feasibility and dynamics of a council-based economic system. By adjusting parameters and introducing new scenarios, researchers and enthusiasts can gain insights into the potential of such an economy to adapt and thrive under various conditions.
