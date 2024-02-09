@@ -61,6 +61,12 @@ For detailed information on how to utilize the bulk simulation tools effectively
 
 The addition of bulk simulation tools to the Simple Council Economy model v0.02 opens up new avenues for comprehensive analysis and exploration of council-based economic systems. By leveraging these tools, researchers and enthusiasts can gain deeper insights into the viability and efficiency of such systems under a wide range of conditions. We look forward to seeing the community's contributions and insights as we continue to develop and refine this model.
 
+## Related Reading: Our Writings
+- [How Democracy Can Be Revitalized With an Ancient Twist and a Tech Upgrade: A Peek Into the Future](https://hackernoon.com/how-democracy-can-be-revitalized-with-an-ancient-twist-and-a-tech-upgrade-a-peek-into-the-future)
+- [Revisiting Chaulieu’s Workers’ Councils and the Economics of a Self-Managed Society](https://aorb.info/index.php/category/pamphlets/2023/12/28/revisiting-self-managed-society/index.html/)
+- [Decentralized Horizons: Empowering a Participatory Economy with Blockchain and AI](https://delegate0x.substack.com/p/decentralized-horizons-empowering)
+- See also our ongoing series: [A Post-Capitalist Critique of Cryptoeconomics](https://github.com/Post-Capitalist-Labs/publications/blob/main/README.md#our-series-developing-a-post-capitalist-cryptoeconomics)
+
 ### Contribution
 
 Fork this repository and submit a pull request with your enhancements or fixes to contribute to the model's development.
