@@ -71,10 +71,26 @@ By running these scenarios, you can gain insights into how different aspects of 
 
 ### How to use our tooling for bulk simulations
 1. From the the `council_economy` folder, run the bash script for the scenario of your choice, for example: `bash ./tests/basic_simulation.sh`. This will generate output files for each simulation run in the `simulation_outputs` directory.
-2. Run the Python script `python3 aggregate_data.py`: This script is designed to compile and organize simulation data from multiple text files into a single, structured CSV file for easier analysis. It works by reading each text file within a specified directory (e.g., for different simulation scenarios like Baseline, Crisis, High Activity, etc.), extracting key-value pairs of simulation parameters and results, and then aggregating this data into a pandas DataFrame. This DataFrame is then exported as a CSV file, named according to the scenario it represents, facilitating a comprehensive and consolidated view of the simulation outcomes. This process enables efficient and systematic analysis of the model's behavior across a range of conditions, supporting in-depth exploration and understanding of the simulated council-based economy dynamics.
+2. Run the Python script `python3 aggregate_data.py`: This script is designed to compile and organize simulation data from multiple text files into a single, structured CSV file for easier analysis. To do so you must edit `aggregate_data.py` and uncomment the lins according to data you want aggregated, and also do the same for the CSV filename you want it to output:
+```
+# Uncomment according to data you want aggregated.
+# df = aggregate_data("simulation_outputs")
+df = aggregate_data("simulation_outputs/Baseline")
+# df = aggregate_data("simulation_outputs/Crisis")
+
+# Dump data to CSV
+# Uncomment according to filename.
+# df.to_csv("simulation_outputs/output_aggregated_data.csv", index=False)
+df.to_csv("simulation_outputs/Baseline_data.csv", index=False)
+# df.to_csv("simulation_outputs/Crisis_data.csv", index=False)
+```
+
+3. `aggregate_data.py` works by reading each text file within a specified directory (e.g., for different simulation scenarios like Baseline, Crisis, High Activity, etc.), extracting key-value pairs of simulation parameters and results, and then aggregating this data into a pandas DataFrame. This DataFrame is then exported as a CSV file, named according to the scenario it represents, facilitating a comprehensive and consolidated view of the simulation outcomes. This process enables efficient and systematic analysis of the model's behavior across a range of conditions, supporting in-depth exploration and understanding of the simulated council-based economy dynamics.
 
 You can also run the council_economy.py script from the command line with specific parameters. For example:
 `python council_economy.py --num_workers_councils 100 --num_consumers_councils 100 --worker_adjustment 10 --consumer_adjustment 10 --acceptable_proposal_difference 20 --stability_window 200 --min_unmatched_threshold 10 --num_steps 100`
+
+### Call to Action: Use our models, share your data!
 
 We would love for you to share the data you produce with our models. Here are ideas for other types of analysis:
 
