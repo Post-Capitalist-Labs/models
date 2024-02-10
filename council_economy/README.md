@@ -45,13 +45,13 @@ The potential number of simulations, given the parameter ranges defined by the m
 
 ## Link to Full Text on Bulk Simulation Tools
 
-For detailed information on how to utilize the bulk simulation tools effectively, including examples of specific scenarios and sampling techniques, [please refer to the full text in the  tests README.md document](council_economy/tests/README.md).
+For detailed information on how to utilize the bulk simulation tools effectively, including examples of specific scenarios and sampling techniques, [please refer to the full text in the  tests README.md document](tests/README.md).
 
 The addition of bulk simulation tools to the Simple Council Economy model v0.02 opens up new avenues for comprehensive analysis and exploration of council-based economic systems. By leveraging these tools, researchers and enthusiasts can gain deeper insights into the viability and efficiency of such systems under a wide range of conditions. We look forward to seeing the community's contributions and insights as we continue to develop and refine this model.
 
 ## Contributing Your Simulations
 
-We encourage users to run their own bulk simulations and analysis. The repository [includes data from bulk scenario simulations for initial exploration](council_economy/tests/simulation_outputs). However, users are invited to share their own data and insights, which could potentially be added to the project. If you use our bulk simulation tools, we would love to see your data and analysis.
+We encourage users to run their own bulk simulations and analysis. The repository [includes data from bulk scenario simulations for initial exploration](tests/simulation_outputs). However, users are invited to share their own data and insights, which could potentially be added to the project. If you use our bulk simulation tools, we would love to see your data and analysis.
 
 ## Related Reading: Our Writings
 - [How Democracy Can Be Revitalized With an Ancient Twist and a Tech Upgrade: A Peek Into the Future](https://hackernoon.com/how-democracy-can-be-revitalized-with-an-ancient-twist-and-a-tech-upgrade-a-peek-into-the-future)
