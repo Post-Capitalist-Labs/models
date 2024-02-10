@@ -1,6 +1,6 @@
 # Simple Council Economy Model v0.02
 
-The Simple Council Economy model v0.02 builds on the foundational framework introduced in v0.01, maintaining the concept of worker and consumer councils that make proposals regarding production and consumption. This version incorporates enhanced feedback mechanisms and equilibrium tracking features to more closely simulate the dynamics of a council-based economy. The model iterates these proposals towards achieving a balance between supply and demand, reflecting a more nuanced approach to reaching equilibrium. Finally, this version delivers a powerful suite of bulk simulation tools capable of generating big data analysis of the Council Economy Model, details below.
+The Simple Council Economy model `v0.02` builds on the foundational framework introduced in `v0.01`, maintaining the concept of worker and consumer councils that make proposals regarding production and consumption. This version incorporates enhanced feedback mechanisms and equilibrium tracking features to more closely simulate the dynamics of a council-based economy. The model iterates these proposals towards achieving a balance between supply and demand, reflecting a more nuanced approach to reaching equilibrium. Finally, this version delivers a powerful suite of bulk simulation tools capable of generating big data analysis of the Council Economy Model, details below.
 
 ## Enhanced Features in v0.02
 
@@ -10,9 +10,9 @@ The Simple Council Economy model v0.02 builds on the foundational framework intr
 
 ## Model Components
 
-- **CouncilAgent**: Represents both worker and consumer councils, each starting with a random initial proposal.
-- **WorkersCouncilAgent** and **ConsumersCouncilAgent**: Subclasses of CouncilAgent with specific initial proposal ranges and step functions.
-- **CouncilBasedEconomyModel**: The main model class that initializes the agents and runs the simulation, tracking the overall state of the economy.
+- **`CouncilAgent`**: Represents both worker and consumer councils, each starting with a random initial proposal.
+- **`WorkersCouncilAgent`** and **`ConsumersCouncilAgent`**: Subclasses of `CouncilAgent` with specific initial proposal ranges and step functions.
+- **`CouncilBasedEconomyModel`**: The main model class that initializes the agents and runs the simulation, tracking the overall state of the economy.
 
 ## How to Use This Model
 
