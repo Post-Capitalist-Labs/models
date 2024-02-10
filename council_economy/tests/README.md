@@ -1,5 +1,5 @@
 ### How to use our tooling for bulk simulations
-1. From the the `council_economy` folder, run the bash script `bash ./tests/run_tests.sh`. This will generate output files for each simulation run in the `simulation_outputs` directory.
+1. From the the `council_economy` folder, run the bash script `bash ./tests/basic_simulation.sh`. This will generate output files for each simulation run in the `simulation_outputs` directory.
 2. Run the Python script `python3 aggregate_data.py`. This script reads all the output files, aggregates the data, and saves it into a single CSV file `aggregated_data.csv`.
 
 You can also run the council_economy.py script from the command line with specific parameters. For example:
