@@ -17,4 +17,5 @@ Below, you will find a list of our latest model releases, each accompanied by a 
 
 ### Releases
 
-- [Simple Council Economy v0.01](https://github.com/Post-Capitalist-Labs/models/releases/tag/v0.01)  
+- [Simple Council Economy v0.02](https://github.com/Post-Capitalist-Labs/models/releases/tag/v0.02)
+- [Simple Council Economy v0.01](https://github.com/Post-Capitalist-Labs/models/releases/tag/v0.01)    
