@@ -1,4 +1,4 @@
-# Changelog
+- **Contribution Encouragement**: Encouraged users to contribute their own bulk simulation data and findings.
 
 ## [v0.02] - 02/10/2024
 
