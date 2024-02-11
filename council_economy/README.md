@@ -30,6 +30,14 @@ To explore the dynamics of a council-based economy and test its efficiency and v
 
 Upon running, you'll access:
 - A browser-based interactive model at `http://127.0.0.1:8521/`.
+- sliders that allow users to dynamically adjust parameters including:
+  - Number of Worker Councils: Adjusts the total worker councils in the simulation.
+  - Number of Consumer Councils: Sets the number of consumer councils participating.
+  - Worker Adjustment: Controls how much worker councils can alter their production proposals.
+  - Consumer Adjustment: Dictates the adjustment range for consumer consumption proposals.
+  - Acceptable Proposal Difference: Defines the threshold for what constitutes a match between proposals.
+  - Stability Window: Determines the period over which stability is assessed.
+  - Minimal Unmatched Threshold: Sets the minimum number of proposals that can remain unmatched.
 - Terminal logs output from `text_visualization`, providing detailed insights into each simulation step.
 
 ### Experimentation Suggestions
