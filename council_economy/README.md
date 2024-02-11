@@ -1,7 +1,6 @@
 
-https://github.com/Post-Capitalist-Labs/models/assets/58642686/be61c555-a9cd-4de2-abf1-d797f58f69a9
-
 # Simple Council Economy Model v0.02
+https://github.com/Post-Capitalist-Labs/models/assets/58642686/be61c555-a9cd-4de2-abf1-d797f58f69a9
 
 The Simple Council Economy model `v0.02` builds on the foundational framework introduced in `v0.01`, maintaining the concept of worker and consumer councils that make proposals regarding production and consumption. This version incorporates enhanced feedback mechanisms and equilibrium tracking features to more closely simulate the dynamics of a council-based economy. The model iterates these proposals towards achieving a balance between supply and demand, reflecting a more nuanced approach to reaching equilibrium. Finally, this version delivers a powerful suite of bulk simulation tools capable of generating big data analysis of the Council Economy Model, details below.
 
