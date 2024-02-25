@@ -8,11 +8,14 @@ class CoopAgent(Agent):
     def __init__(self, unique_id, model, production_cost, REA_percent, market_price=20):
         super().__init__(unique_id, model)
         self.production_cost = production_cost + random.uniform(-1, 1)
+        # Adjusted to directly assign randomized REA_percent
         self.REA_percent = REA_percent + random.uniform(-5, 5)
         self.market_price = market_price + random.uniform(-2, 2)
         self.equitable_price = None
         self.is_economically_advantaged = False
         self.interactions = []
+        # Determine initial color based on REA%
+        self.color = self.determine_color()
 
     def step(self):
         self.calculate_equitable_price()
@@ -24,6 +27,8 @@ class CoopAgent(Agent):
         # Determine interactions
         next_agent_id = (self.unique_id + 1) % self.model.num_agents
         self.interactions = [next_agent_id]
+        # Update color based on REA% after interactions
+        self.color = self.determine_color()
 
     def calculate_equitable_price(self):
         surplus = self.market_price - self.production_cost
@@ -47,6 +52,15 @@ class CoopAgent(Agent):
         # Redistribute surplus if economically advantaged
         if self.is_economically_advantaged:
             self.model.environment.redistribute_surplus(self)
+
+    def determine_color(self):
+        # Determine color based on REA%
+        if self.REA_percent < 100:
+            return "#FFFF00"  # Yellow
+        elif self.REA_percent > 100:
+            return "#FF0000"  # Red
+        else:
+            return "#00FF00"  # Green
 
 class Environment:
     def __init__(self):
@@ -100,7 +114,8 @@ class CoopModel(Model):
         for agent in self.schedule.agents:
             agent.step()
 
-            color = "#FF0000" if agent.is_economically_advantaged else "#000000"
+            # Use agent's color attribute for node color
+            color = agent.color
             size = 15 if agent.is_economically_advantaged else 10
             self.G.add_node(agent.unique_id, color=color, size=size)
 
@@ -109,6 +124,14 @@ class CoopModel(Model):
 
         self.schedule.step()
         self.datacollector.collect(self)
+
+    def text_visualization(self):
+        print("Step:", self.schedule.steps)
+        print("Number of Agents:", self.num_agents)
+        print("Production Costs:", self.production_cost)
+        print("REA Percent:", self.REA_percent)
+        print("Market Price:", self.market_price)
+        print("Alpha Value:", self.alpha_value)
 
         # Log: Print a summary after each step
         advantaged_count = sum(1 for a in self.schedule.agents if a.is_economically_advantaged)
