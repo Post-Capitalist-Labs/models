@@ -15,7 +15,7 @@ class CoopAgent(Agent):
         self.is_economically_advantaged = False
         self.interactions = []
         # Determine initial color based on REA%
-        self.color = self.determine_color()
+        # self.color = self.determine_color()
 
     def step(self):
         self.calculate_equitable_price()
@@ -27,8 +27,6 @@ class CoopAgent(Agent):
         # Determine interactions
         next_agent_id = (self.unique_id + 1) % self.model.num_agents
         self.interactions = [next_agent_id]
-        # Update color based on REA% after interactions
-        self.color = self.determine_color()
 
     def calculate_equitable_price(self):
         surplus = self.market_price - self.production_cost
@@ -56,6 +54,8 @@ class CoopAgent(Agent):
     def determine_color(self):
         # Determine the difference between the equitable price and the market price
         price_difference = self.equitable_price - self.market_price
+        # Update color based on REA% after interactions
+        self.color = self.determine_color()
 
         # Define thresholds for determining when an agent is considered to have achieved
         # an equitable distribution. These thresholds can be adjusted.
