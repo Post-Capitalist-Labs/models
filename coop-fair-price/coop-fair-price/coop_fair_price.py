@@ -54,13 +54,21 @@ class CoopAgent(Agent):
             self.model.environment.redistribute_surplus(self)
 
     def determine_color(self):
-        # Determine color based on REA%
-        if self.REA_percent < 100:
-            return "#FFFF00"  # Yellow
-        elif self.REA_percent > 100:
-            return "#FF0000"  # Red
+        # Determine the difference between the equitable price and the market price
+        price_difference = self.equitable_price - self.market_price
+
+        # Define thresholds for determining when an agent is considered to have achieved
+        # an equitable distribution. These thresholds can be adjusted.
+        upper_threshold = 1 # Considered wealthy if the price difference is above this value
+        lower_threshold = -1 # Considered under-resourced if the price difference is below this value
+
+        # Determine color based on price difference
+        if price_difference > upper_threshold:
+            return "#FFOOOO" # Red for wealthy
+        elif price_difference < lower_threshold:
+            return "#FFFFOO" # Yellow for under-resourced
         else:
-            return "#00FF00"  # Green
+            return "OOFFOO" # Green for equitable distribution
 
 class Environment:
     def __init__(self):
