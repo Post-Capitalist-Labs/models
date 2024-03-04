@@ -13,9 +13,13 @@ class CoopAgent(Agent):
         self.equitable_price = None
         self.is_economically_advantaged = False
         self.interactions = []
+        # Initialize with a default color to avoid AttributeError before the first step
+        self.color = "#000000"
 
     def step(self):
         self.calculate_equitable_price()
+        # Update color based on the new equitable price
+        self.color = self.determine_color()
         self.update_economic_status()
         self.consume_resources()
         self.exploit_opportunities()
@@ -36,17 +40,32 @@ class CoopAgent(Agent):
         self.is_economically_advantaged = self.equitable_price > threshold
 
     def consume_resources(self):
-        # Consume resources from the environment
-        self.model.environment.consume_resource(self)
+        # Placeholder for consuming resources from the environment
+        pass
 
     def exploit_opportunities(self):
-        # Check and exploit new opportunities in the environment
-        self.model.environment.exploit_opportunity(self)
+        # Placeholder for exploiting new opportunities in the environment
+        pass
 
     def redistribute_surplus(self):
-        # Redistribute surplus if economically advantaged
-        if self.is_economically_advantaged:
-            self.model.environment.redistribute_surplus(self)
+        # Placeholder for redistributing surplus if economically advantaged
+        pass
+
+    def determine_color(self):
+        # Make sure equitable_price is calculated before determining color
+        if self.equitable_price is None:
+            return "#000000"  # Default color if equitable_price hasn't been set
+
+        price_difference = self.equitable_price - self.market_price
+        upper_threshold = 1
+        lower_threshold = -1
+
+        if price_difference > upper_threshold:
+            return "#FF0000"  # Red for wealthy
+        elif price_difference < lower_threshold:
+            return "#FFFF00"  # Yellow for under-resourced
+        else:
+            return "#00FF00"  # Green for equitable distribution
 
 class Environment:
     def __init__(self):
@@ -54,23 +73,18 @@ class Environment:
         self.opportunities = []
 
     def consume_resource(self, agent):
-        # Logic for consuming resources
         pass
 
     def exploit_opportunity(self, agent):
-        # Logic for agents to exploit opportunities
         pass
 
     def redistribute_surplus(self, agent):
-        # Logic for redistributing surplus from advantaged agents
         pass
 
     def regenerate_resources(self):
-        # Logic for resource regeneration
         pass
 
     def generate_opportunities(self):
-        # Logic for generating new opportunities
         pass
 
 class CoopModel(Model):
@@ -99,8 +113,8 @@ class CoopModel(Model):
         self.G.clear()
         for agent in self.schedule.agents:
             agent.step()
-
-            color = "#FF0000" if agent.is_economically_advantaged else "#000000"
+            # Use agent's updated color attribute for node color
+            color = agent.color
             size = 15 if agent.is_economically_advantaged else 10
             self.G.add_node(agent.unique_id, color=color, size=size)
 
@@ -109,7 +123,3 @@ class CoopModel(Model):
 
         self.schedule.step()
         self.datacollector.collect(self)
-
-        # Log: Print a summary after each step
-        advantaged_count = sum(1 for a in self.schedule.agents if a.is_economically_advantaged)
-        print(f"End of step {self.schedule.steps}: {advantaged_count} agents are economically advantaged out of {self.num_agents}")

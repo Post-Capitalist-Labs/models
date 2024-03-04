@@ -1,65 +1,62 @@
-![](https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/assets/Screenshot%202024-01-10%20at%2009.50.29.png?raw=true)
-<i>Screenshot: Red nodes indicate advantaged co-ops while black nodes indicate disadvantaged co-ops</i> 
+<img width="1005" alt="Screenshot 2024-03-04 at 21 21 52" src="https://github.com/Post-Capitalist-Labs/models/assets/58642686/995a0d56-5575-4bc9-96e3-6d9cfebe4352">
+<i>Screenshot: Node colors represent the co-op's economic status with red for economically advantaged, yellow for under-resourced, and green for equitable distribution. The size of the node indicates the economic advantage level, with larger nodes representing more advantaged co-ops.</i>
 
 # Equitable Pricing Formula in a Cooperative Economy
 
-Here we model an equitable pricing formula, in an economy of cooperatives. Drawing from the work of Economist Robin Hahnel in "[Reducing Inequities among Worker-Owned Cooperatives: A Proposal](http://www.jstor.org/stable/20642477)", this formula will redistribute surplus from more economically advantaged co-ops to less advantaged ones to maintain balance and sustainability within the cooperative community.
+This model simulates an equitable pricing formula in an economy of cooperatives, inspired by Economist Robin Hahnel's work "[Reducing Inequities among Worker-Owned Cooperatives: A Proposal](http://www.jstor.org/stable/20642477)". It aims to redistribute surplus among worker-owned cooperatives to reduce inequities and maintain balance within the community.
 
 ## Definitions
 
-Before we construct the formula, let's define some terms:
-
-- `C_p`: The production cost of a good or service for a particular co-op.
-- `P_m`: The market price for the good or service in a competitive market without equity adjustments.
-- `S`: The surplus generated from the exchange, calculated as `P_m - C_p`.
-- `REA%`: The Relative Economic Advantage percentage. A value of 100% means no advantage or disadvantage, values above 100% indicate an advantage, and below 100% indicate a disadvantage.
-- `α (alpha)`: A redistribution rate that determines the portion of the surplus to be redistributed. It could be a fixed value or variable depending on `REA%`. [See options being considered for calculating alpha.](https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/calculate_alpha.md)
-- `E`: The equity adjustment amount to be added or subtracted from the market price for the disadvantaged or advantaged co-op, respectively.
+- `C_p`: Production cost for a co-op.
+- `P_m`: Market price in a competitive market without equity adjustments.
+- `S`: Surplus, calculated as `P_m - C_p`.
+- `REA%`: Relative Economic Advantage percentage, a metric used to measure the economic position of a cooperative relative to others within the same market or ecosystem.
+- `α (alpha)`: Redistribution rate for the surplus.
+- `E`: Equity adjustment amount.
 
 ## The Formula
 
-The equitable price `P_e` for a good or service sold by a co-op is calculated as follows:
+`P_e = P_m + E`, where `E` depends on the co-op's `REA%`:
 
-`P_e = P_m + E`
-
-Where `E` is determined by the co-op's `REA%`:
-```
-E = {
-(S * α) if REA% < 100
--(S * α) if REA% > 100
-0 if REA% = 100
-}
-```
-
-- Co-ops with `REA% < 100` will charge a higher price to receive additional support.
-- Co-ops with `REA% > 100` will reduce their price to redistribute their economic benefits.
-- Co-ops with `REA% = 100` will charge the market price `P_m`.
-
-The `α (alpha)` could be a fixed rate (e.g., 10%) or a sliding scale that increases as `REA%` decreases, providing more support to those more disadvantaged.
+- Co-ops with `REA% < 100` charge more for additional support.
+- Co-ops with `REA% > 100` reduce their price to redistribute benefits.
+- Co-ops with `REA% = 100` charge the market price `P_m`.
 
 ## Model Implementation
 
-To simulate this formula, we build an agent-based model using the Mesa framework in Python, with the following components:
+The model uses the Mesa framework in Python and includes:
 
-- **Agents**: Representing the co-op enterprises.
-- **Market**: Mechanism for transactions.
-- **Scheduler**: To control the sequence of events.
-- **DataCollector**: For data gathering and reporting.
+- **Agents**: Represent co-op enterprises.
+- **Market**: For transactions.
+- **Scheduler**: Controls event sequence.
+- **DataCollector**: Gathers and reports data.
 
-The simulation allows us to analyze the effects of the equitable pricing formula under various scenarios and conditions within the cooperative economy.
+### Node Colors and Sizes
+
+- **Red Nodes**: Indicate economically advantaged co-ops. They have achieved a higher equitable price due to their surplus and redistribution settings.
+- **Yellow Nodes**: Represent under-resourced co-ops, which sell below the equitable distribution threshold.
+- **Green Nodes**: Signify co-ops in equitable distribution, positioned closely around the market price `P_m`.
+- **Node Sizes**: Larger nodes represent more economically advantaged co-ops, determined by whether their equitable price exceeds a set threshold.
+
+**Note the difference between Red Nodes and Node Sizes:** While red nodes specifically identify co-ops that are economically advantaged within the simulation, the size of the nodes provides a visual scale of how advantaged or disadvantaged a co-op is relative to others in the model, offering a more nuanced view of the economic dynamics at play.
+
+## Sliders
+
+- **Number of Co-ops (N)**: Adjusts the total number of cooperative agents in the simulation.
+- **Production Cost**: Sets the base cost of production for goods/services across co-ops.
+- **REA Percent**: Determines the relative economic advantage/disadvantage percentage.
+- **Market Price**: Controls the base market price before equity adjustments.
+- **Alpha Value**: Adjusts the rate of surplus redistribution among co-ops.
+
+## Running the Model
+
+1. Install Python 3.12.1+ and Mesa.
+2. Clone the repository.
+3. Navigate to `coop-fair-price`.
+4. Execute `mesa runserver`.
+
+Access the interactive model at `http://127.0.0.1:8521/`.
 
 ## Conclusion
 
-This pricing formula and simulation model serve as a foundational approach to fostering equity within a cooperative economic system. It ensures that all members of the community, regardless of their economic standing, can participate and thrive.
-
-# How to run this model
-
-1. Make sure your local environment has these resources installed:
-- Python 3.12.1 or higher
-- Mesa
-
-2. Clone this respo
-3. `cd`into `coop-fair-price`
-4. Run the cmd `mesa runserver` 
-
-A browser based interactive model will laucnh on `http://127.0.0.1:8521/` 
+This model provides a foundational approach to fostering equity within cooperative economies, ensuring community members can thrive regardless of their economic standing.
