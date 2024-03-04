@@ -38,6 +38,8 @@ The model uses the Mesa framework in Python and includes:
 - **Green Nodes**: Signify co-ops in equitable distribution, positioned closely around the market price `P_m`.
 - **Node Sizes**: Larger nodes represent more economically advantaged co-ops, determined by whether their equitable price exceeds a set threshold.
 
+**Note the difference between Red Nodes and Node Sizes:** While red nodes specifically identify co-ops that are economically advantaged within the simulation, the size of the nodes provides a visual scale of how advantaged or disadvantaged a co-op is relative to others in the model, offering a more nuanced view of the economic dynamics at play.
+
 ## Sliders
 
 - **Number of Co-ops (N)**: Adjusts the total number of cooperative agents in the simulation.
