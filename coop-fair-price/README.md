@@ -1,4 +1,6 @@
-![](https://github.com/Post-Capitalist-Labs/models/blob/main/coop-fair-price/assets/Screenshot%202024-01-10%20at%2009.50.29.png?raw=true)
+
+
+<img width="1005" alt="Screenshot 2024-03-04 at 21 21 52" src="https://github.com/Post-Capitalist-Labs/models/assets/58642686/995a0d56-5575-4bc9-96e3-6d9cfebe4352">
 <i>Screenshot: Node colors represent the co-op's economic status with red for economically advantaged, yellow for under-resourced, and green for equitable distribution. The size of the node indicates the economic advantage level, with larger nodes representing more advantaged co-ops.</i>
 
 # Equitable Pricing Formula in a Cooperative Economy
