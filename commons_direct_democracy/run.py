@@ -1,6 +1,6 @@
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import ChartModule
-from mesa.visualization.UserParam import UserSettableParameter
+from mesa.visualization.modules import UserSettableParameter
 from direct_democracy_model import DirectDemocracyModel
 
 def agent_portrayal(agent):
