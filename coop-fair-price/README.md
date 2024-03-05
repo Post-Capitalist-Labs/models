@@ -3,7 +3,7 @@
 
 # Equitable Pricing Formula in a Cooperative Economy
 
-This model simulates an equitable pricing formula in an economy of cooperatives, inspired by Economist Robin Hahnel's work "[Reducing Inequities among Worker-Owned Cooperatives: A Proposal](http://www.jstor.org/stable/20642477)". It aims to redistribute surplus among worker-owned cooperatives to reduce inequities and maintain balance within the community.
+This model simulates an equitable pricing formula in an economy of cooperatives, inspired by Economist Robin Hahnel's work "[Reducing Inequities among Worker-Owned Cooperatives: A Proposal](http://www.jstor.org/stable/20642477)". It aims to redistribute surplus among cooperatives to reduce inequities and maintain balance within the community.
 
 ## Definitions
 
